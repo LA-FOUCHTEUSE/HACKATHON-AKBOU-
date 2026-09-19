@@ -1,0 +1,418 @@
+{
+  "app": {
+    "name": "TAWA3",
+    "tagline": "Le bénévolat qui compte, partout en Algérie"
+  },
+  "nav": {
+    "home": "Accueil",
+    "campaigns": "Campagnes",
+    "feed": "Mon fil",
+    "profile": "Mon profil",
+    "inbox": "Messages",
+    "leaderboard": "Classement",
+    "dashboard": "Tableau de bord",
+    "myCampaigns": "Mes campagnes",
+    "scanner": "Scanner",
+    "caisse": "Caisse",
+    "browse": "Campagnes à soutenir",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "language": "Langue",
+    "roleVolunteer": "Bénévole",
+    "roleOrganization": "Association",
+    "roleSponsor": "Sponsor"
+  },
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "back": "Retour",
+    "loading": "Chargement...",
+    "edit": "Modifier",
+    "see": "Voir",
+    "empty": "Rien à afficher pour le moment.",
+    "points": "{count, plural, one {# point} other {# points}}",
+    "events": "{count, plural, one {# action} other {# actions}}",
+    "unlimited": "Places illimitées",
+    "seatsLeft": "{count, plural, =0 {Complet} one {# place restante} other {# places restantes}}",
+    "participants": "{count, plural, =0 {Aucun participant} one {# participant} other {# participants}}",
+    "by": "par {org}",
+    "from": "Du {start}",
+    "to": "au {end}",
+    "verified": "Association vérifiée",
+    "optional": "facultatif",
+    "yes": "Oui",
+    "no": "Non",
+    "unexpectedError": "Une erreur inattendue est survenue.",
+    "retry": "Réessayer",
+    "notFound": "Page introuvable",
+    "notFoundBody": "Cette page n'existe pas ou n'est pas accessible avec ce compte.",
+    "backHome": "Retour à l'accueil"
+  },
+  "landing": {
+    "title": "Transformez l'envie d'aider en actions concrètes",
+    "subtitle": "TAWA3 relie les bénévoles, les associations et les entreprises. Inscrivez-vous à une campagne, pointez votre présence par QR code et suivez votre impact.",
+    "ctaVolunteer": "Je deviens bénévole",
+    "ctaOrganization": "J'inscris mon association",
+    "ctaLogin": "Accès démo",
+    "ctaCampaigns": "Voir les campagnes",
+    "domainsTitle": "Six façons de s'engager",
+    "domains": {
+      "ecology": {
+        "title": "Écologie et environnement",
+        "description": "Nettoyage des plages, des forêts et des quartiers, recyclage, plantation d'arbres. Les résultats de chaque action sont partagés pour donner envie à d'autres de participer."
+      },
+      "health": {
+        "title": "Santé et urgence",
+        "description": "Don de sang, formations aux premiers secours, visites et soutien moral aux malades, courses solidaires pour les personnes atteintes de cancer."
+      },
+      "social": {
+        "title": "Social et entraide",
+        "description": "Distributions alimentaires, actions du Ramadan, maraudes hivernales, couvertures, rénovation d'écoles et entretien des lieux communautaires."
+      },
+      "education": {
+        "title": "Éducation et soutien",
+        "description": "Soutien scolaire gratuit, révisions du BEM et du BAC, alphabétisation, initiation des seniors à Internet."
+      },
+      "skills": {
+        "title": "Compétences et numérique",
+        "description": "Programmation, sites web, design et traduction au service des associations."
+      },
+      "inclusion": {
+        "title": "Handicap et inclusion",
+        "description": "Accompagnement des personnes à mobilité réduite, sport adapté et basket fauteuil, livres audio pour les personnes malvoyantes."
+      }
+    }
+  },
+  "auth": {
+    "title": "Connexion démo",
+    "subtitle": "Choisissez un compte pour explorer la plateforme. Aucun mot de passe n'est demandé dans cette version de démonstration.",
+    "volunteers": "Bénévoles",
+    "organizations": "Associations",
+    "sponsors": "Sponsors",
+    "continueAs": "Continuer",
+    "demo": "Compte de démo",
+    "newAccount": "Nouveau compte",
+    "signupVolunteer": "Créer un compte bénévole",
+    "signupOrganization": "Inscrire une association"
+  },
+  "onboarding": {
+    "volunteerTitle": "Créer mon compte bénévole",
+    "volunteerSubtitle": "Quelques informations suffisent pour recevoir des campagnes adaptées à vos centres d'intérêt.",
+    "orgTitle": "Inscrire mon association",
+    "orgSubtitle": "Présentez votre association pour publier vos campagnes et recruter des bénévoles.",
+    "fullName": "Nom complet",
+    "email": "Adresse e-mail",
+    "city": "Ville",
+    "birthYear": "Année de naissance",
+    "bio": "Quelques mots sur vous",
+    "preferredDomains": "Domaines qui vous intéressent",
+    "orgName": "Nom de l'association",
+    "domains": "Domaines d'action",
+    "description": "Présentation",
+    "contactPhone": "Téléphone de contact",
+    "submitVolunteer": "Créer mon compte",
+    "submitOrg": "Inscrire l'association",
+    "submitting": "Création en cours..."
+  },
+  "campaigns": {
+    "feedTitle": "Campagnes près de vous",
+    "feedSubtitle": "Inscrivez-vous, puis présentez votre QR code le jour de l'action pour gagner vos points.",
+    "publicTitle": "Toutes les campagnes",
+    "enroll": "Je participe",
+    "enrolled": "Inscrit",
+    "waitlisted": "Liste d'attente",
+    "attended": "Présence validée",
+    "withdraw": "Me désister",
+    "favorite": "Ajouter aux favoris",
+    "unfavorite": "Retirer des favoris",
+    "showQr": "Afficher mon QR",
+    "loginToEnroll": "Connectez-vous pour participer",
+    "needsFunding": "Recherche de financement",
+    "sponsorRequested": "Sponsor recherché",
+    "raised": "{raised} collectés sur {goal}",
+    "raisedNoGoal": "{raised} collectés",
+    "location": "Lieu",
+    "dates": "Dates",
+    "organizer": "Organisé par",
+    "capacity": "Capacité",
+    "pointsValue": "Points gagnés à la présence",
+    "ongoing": "En cours",
+    "enrolledToast": "Inscription confirmée.",
+    "waitlistedToast": "La campagne est complète : vous êtes sur liste d'attente.",
+    "withdrawnToast": "Vous vous êtes désisté."
+  },
+  "domains": {
+    "ECOLOGY": "Écologie",
+    "ENVIRONMENT": "Environnement",
+    "EDUCATION": "Éducation",
+    "HEALTH": "Santé",
+    "SOCIAL": "Social et entraide",
+    "CULTURE": "Culture",
+    "SPORT": "Sport",
+    "HUMANITARIAN": "Humanitaire",
+    "TECH": "Numérique",
+    "ANIMAL_WELFARE": "Protection animale"
+  },
+  "status": {
+    "campaign": {
+      "DRAFT": "Brouillon",
+      "PUBLISHED": "Publiée",
+      "ONGOING": "En cours",
+      "COMPLETED": "Terminée",
+      "CANCELLED": "Annulée"
+    },
+    "enrollment": {
+      "ENROLLED": "Inscrit",
+      "WAITLISTED": "Liste d'attente",
+      "WITHDRAWN": "Désisté",
+      "ATTENDED": "Présent",
+      "NO_SHOW": "Absent"
+    }
+  },
+  "profile": {
+    "title": "Mon profil",
+    "points": "Points",
+    "events": "Actions réalisées",
+    "rank": "Rang national",
+    "rankValue": "{rank} sur {total}",
+    "tier": "Palier",
+    "nextTier": "Encore {points} points pour atteindre le palier {tier}",
+    "maxTier": "Vous avez atteint le palier le plus élevé.",
+    "history": "Historique des points",
+    "upcoming": "Mes prochaines campagnes",
+    "attended": "Campagnes réalisées",
+    "favorites": "Mes favoris",
+    "reasonAttended": "Présence validée",
+    "reasonOpening": "Historique antérieur",
+    "noUpcoming": "Aucune campagne à venir. Parcourez le fil pour en trouver une.",
+    "noAttended": "Aucune présence validée pour le moment."
+  },
+  "tier": {
+    "newcomer": "Nouveau venu",
+    "contributor": "Contributeur",
+    "committed": "Engagé",
+    "champion": "Champion",
+    "legend": "Légende"
+  },
+  "leaderboard": {
+    "title": "Classement national",
+    "subtitle": "Les bénévoles les plus actifs d'Algérie, classés par points puis par nombre d'actions.",
+    "rank": "Rang",
+    "volunteer": "Bénévole",
+    "you": "Votre position : {rank} sur {total}"
+  },
+  "inbox": {
+    "title": "Messages",
+    "markAll": "Tout marquer comme lu",
+    "markRead": "Marquer comme lu",
+    "empty": "Aucun message.",
+    "unread": "{count, plural, =0 {Aucun message non lu} one {# message non lu} other {# messages non lus}}",
+    "openCampaign": "Voir la campagne"
+  },
+  "notifications": {
+    "recommendation": {
+      "title": "Une campagne pour vous",
+      "body": "{orgName} publie « {campaignTitle} », dans un domaine qui vous intéresse."
+    },
+    "cancelled": {
+      "title": "Campagne annulée",
+      "body": "« {campaignTitle} », organisée par {orgName}, a été annulée. Merci pour votre engagement."
+    },
+    "reminder": {
+      "title": "Rappel",
+      "body": "« {campaignTitle} » commence le {startAt}. Pensez à présenter votre QR code sur place."
+    },
+    "enrollmentConfirmed": {
+      "title": "Inscription confirmée",
+      "body": "Vous êtes inscrit à « {campaignTitle} »."
+    },
+    "pointsAwarded": {
+      "title": "Présence validée",
+      "body": "Vous avez gagné {points} points grâce à « {campaignTitle} ». Nouveau total : {total} points."
+    },
+    "rankUp": {
+      "title": "Nouveau palier atteint",
+      "body": "Félicitations, vous êtes désormais au palier {tierKey}."
+    },
+    "sponsorConfirmed": {
+      "title": "Nouveau sponsor",
+      "body": "{companyName} soutient « {campaignTitle} » avec le {tierKey} ({amount})."
+    },
+    "donationReceived": {
+      "title": "Nouveau don",
+      "body": "{donorName} a fait un don de {amount} pour « {campaignTitle} »."
+    }
+  },
+  "checkin": {
+    "title": "Mon QR de présence",
+    "instructions": "Présentez ce QR code à l'organisateur à votre arrivée. Il est personnel et à usage unique.",
+    "expires": "Valable jusqu'à {time}",
+    "regenerate": "Générer un nouveau code",
+    "manualCode": "Code à saisir si la caméra ne fonctionne pas",
+    "waitlistNotice": "Vous êtes sur liste d'attente : l'organisateur confirme votre participation sur place.",
+    "alreadyAttended": "Votre présence est déjà validée pour cette campagne.",
+    "notEnrolled": "Vous devez être inscrit à cette campagne pour obtenir un QR code.",
+    "closed": "Cette campagne n'accepte plus de pointage.",
+    "generating": "Génération du code..."
+  },
+  "scanner": {
+    "title": "Scanner les présences",
+    "instructions": "Pointez la caméra vers le QR code du bénévole. La présence et les points sont enregistrés immédiatement.",
+    "startCamera": "Activer la caméra",
+    "stopCamera": "Arrêter la caméra",
+    "cameraError": "La caméra n'est pas disponible. Utilisez la saisie manuelle ci-dessous.",
+    "manualTitle": "Saisie manuelle du code",
+    "manualPlaceholder": "Code affiché sous le QR",
+    "manualSubmit": "Valider le code",
+    "participantNote": "Vous pouvez aussi valider une présence depuis la liste des participants de chaque campagne.",
+    "participantLink": "Aller à mes campagnes",
+    "success": "Présence validée",
+    "pointsAwarded": "+{points} points",
+    "newTotal": "Nouveau total : {total} points",
+    "alreadyAttended": "Présence déjà validée pour ce bénévole",
+    "rankUp": "Nouveau palier : {tier}",
+    "wasWaitlisted": "Inscrit sur liste d'attente",
+    "scanNext": "Scanner le suivant",
+    "processing": "Vérification..."
+  },
+  "org": {
+    "dashboardTitle": "Tableau de bord",
+    "ongoing": "En cours",
+    "upcoming": "À venir",
+    "history": "Historique",
+    "campaignsRun": "Campagnes",
+    "volunteersEngaged": "Bénévoles mobilisés",
+    "totalRaised": "Total collecté",
+    "newCampaign": "Nouvelle campagne",
+    "campaignsTitle": "Mes campagnes",
+    "participants": "Participants",
+    "cancelCampaign": "Annuler la campagne",
+    "cancelConfirm": "Annuler cette campagne ? Les bénévoles inscrits seront prévenus.",
+    "cancelledToast": "{count, plural, =0 {Campagne annulée.} one {Campagne annulée, # bénévole prévenu.} other {Campagne annulée, # bénévoles prévenus.}}",
+    "createdToast": "Campagne créée.",
+    "updatedToast": "Campagne mise à jour.",
+    "editTitle": "Modifier la campagne",
+    "noCampaigns": "Aucune campagne pour le moment.",
+    "form": {
+      "title": "Titre",
+      "description": "Description",
+      "domain": "Domaine",
+      "city": "Ville",
+      "location": "Lieu de rendez-vous",
+      "startAt": "Début",
+      "endAt": "Fin",
+      "capacity": "Nombre de places (0 = illimité)",
+      "pointsValue": "Points attribués à la présence",
+      "status": "Statut",
+      "needsFunding": "Cette campagne a besoin de financement",
+      "fundingGoal": "Objectif de collecte (DZD)",
+      "sponsorRequested": "Rechercher un sponsor",
+      "create": "Publier la campagne",
+      "update": "Enregistrer les modifications"
+    }
+  },
+  "participants": {
+    "title": "Participants",
+    "addTitle": "Ajouter un bénévole par son nom",
+    "namePlaceholder": "Nom complet du bénévole",
+    "add": "Ajouter",
+    "added": "{name} a été ajouté.",
+    "remove": "Retirer",
+    "markAttended": "Valider la présence",
+    "attendedToast": "Présence validée pour {name} : +{points} points.",
+    "alreadyToast": "La présence de {name} était déjà validée.",
+    "candidates": "Plusieurs bénévoles portent ce nom : {names}",
+    "volunteer": "Bénévole",
+    "status": "Statut",
+    "checkedInAt": "Pointé à",
+    "actions": "Actions",
+    "scanLink": "Ouvrir le scanner"
+  },
+  "caisse": {
+    "title": "Caisse",
+    "subtitle": "Dons et parrainages confirmés pour vos campagnes.",
+    "total": "Total collecté",
+    "goal": "Objectif",
+    "progress": "{percent} % de l'objectif",
+    "contributions": "Contributions",
+    "donation": "Don",
+    "sponsorship": "Sponsor",
+    "contributor": "Contributeur",
+    "amount": "Montant",
+    "type": "Type",
+    "date": "Date",
+    "empty": "Aucune contribution pour le moment."
+  },
+  "sponsor": {
+    "browseTitle": "Campagnes à soutenir",
+    "browseSubtitle": "Associez votre entreprise à une action locale et suivez son impact.",
+    "packsTitle": "Nos packs de parrainage",
+    "sponsor": "Sponsoriser",
+    "checkoutTitle": "Parrainer une campagne",
+    "chooseTier": "Choisissez un pack",
+    "chooseCard": "Carte enregistrée",
+    "card": "{brand} se terminant par {last4}",
+    "noCard": "Aucune carte enregistrée sur ce compte.",
+    "pay": "Confirmer le paiement",
+    "processing": "Paiement en cours...",
+    "success": "Merci ! Votre parrainage est confirmé.",
+    "transaction": "Référence de transaction : {id}",
+    "mockNotice": "Paiement simulé : aucune somme n'est réellement débitée."
+  },
+  "packs": {
+    "STARTER": { "name": "Pack Starter" },
+    "PRO": { "name": "Pack Pro" },
+    "MAX": { "name": "Pack Max" },
+    "benefits": {
+      "thanksPost": "Remerciement public sur la page de l'association",
+      "logoOnCampaignPage": "Logo affiché sur la page de la campagne",
+      "logoOnVolunteerShirts": "Logo sur les tee-shirts des bénévoles",
+      "impactReport": "Rapport d'impact détaillé après la campagne",
+      "namedPartner": "Partenaire principal nommé de la campagne",
+      "employeeVolunteeringDay": "Journée de bénévolat pour vos salariés"
+    }
+  },
+  "donation": {
+    "title": "Faire un don",
+    "donorName": "Votre nom",
+    "amount": "Montant (DZD)",
+    "submit": "Donner avec Edahabia",
+    "processing": "Paiement en cours...",
+    "success": "Merci pour votre don de {amount} !",
+    "mockNotice": "Paiement simulé : aucune somme n'est réellement débitée."
+  },
+  "errors": {
+    "UNAUTHENTICATED": "Veuillez vous connecter.",
+    "FORBIDDEN": "Ce compte n'a pas accès à cette action.",
+    "VALIDATION": "Certains champs sont invalides.",
+    "NOT_FOUND": "Élément introuvable.",
+    "EMAIL_TAKEN": "Cette adresse e-mail est déjà utilisée.",
+    "CAMPAIGN_CLOSED": "Cette campagne n'est plus ouverte.",
+    "ALREADY_ATTENDED": "La présence est déjà validée.",
+    "NOT_ENROLLED": "Ce bénévole n'est pas inscrit à cette campagne.",
+    "VOLUNTEER_NOT_FOUND": "Aucun bénévole ne porte ce nom.",
+    "AMBIGUOUS_NAME": "Plusieurs bénévoles portent ce nom.",
+    "TOKEN_NOT_FOUND": "Code inconnu.",
+    "TOKEN_USED": "Ce code a déjà été utilisé.",
+    "TOKEN_EXPIRED": "Ce code a expiré. Le bénévole doit en générer un nouveau.",
+    "CAMPAIGN_NOT_OWNED": "Ce code concerne une campagne d'une autre association.",
+    "CARD_NOT_FOUND": "Carte introuvable.",
+    "PAYMENT_FAILED": "Le paiement a échoué.",
+    "INTERNAL": "Une erreur inattendue est survenue. Réessayez."
+  },
+  "validation": {
+    "required": "Champ obligatoire.",
+    "tooShort": "Trop court.",
+    "tooLong": "Trop long.",
+    "invalid": "Valeur invalide.",
+    "email": "Adresse e-mail invalide.",
+    "phone": "Numéro de téléphone invalide.",
+    "pickDomain": "Choisissez au moins un domaine.",
+    "tooMany": "Cinq choix au maximum.",
+    "date": "Date invalide.",
+    "endBeforeStart": "La fin doit être après le début.",
+    "amountMin": "Montant minimum : 100 DZD.",
+    "amountMax": "Montant maximum : 1 000 000 DZD."
+  }
+}
