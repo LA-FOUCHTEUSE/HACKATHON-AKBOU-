@@ -1,0 +1,263 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL") // pooled
+  directUrl = env("DIRECT_URL") // direct, used by db push
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  VOLUNTEER
+  ORGANIZATION
+  SPONSOR
+}
+
+enum ActivityDomain {
+  ECOLOGY
+  ENVIRONMENT
+  EDUCATION
+  HEALTH
+  SOCIAL
+  CULTURE
+  SPORT
+  HUMANITARIAN
+  TECH
+  ANIMAL_WELFARE
+}
+
+enum CampaignStatus {
+  DRAFT
+  PUBLISHED
+  ONGOING
+  COMPLETED
+  CANCELLED
+}
+
+enum EnrollmentStatus {
+  ENROLLED
+  WAITLISTED
+  WITHDRAWN
+  ATTENDED
+  NO_SHOW
+}
+
+enum SponsorTier {
+  STARTER
+  PRO
+  MAX
+}
+
+enum ContributionStatus {
+  PENDING
+  CONFIRMED
+  FAILED
+}
+
+enum NotificationType {
+  CAMPAIGN_RECOMMENDATION
+  CAMPAIGN_CANCELLED
+  CAMPAIGN_REMINDER
+  ENROLLMENT_CONFIRMED
+  POINTS_AWARDED
+  RANK_UP
+  SPONSOR_CONFIRMED
+  DONATION_RECEIVED
+}
+
+model User {
+  id          String   @id @default(cuid())
+  role        Role
+  email       String   @unique
+  displayName String
+  createdAt   DateTime @default(now())
+
+  volunteer     VolunteerProfile?
+  organization  OrganizationProfile?
+  sponsor       SponsorProfile?
+  notifications Notification[]
+  savedCards    SavedCard[]
+}
+
+model VolunteerProfile {
+  id               String           @id @default(cuid())
+  userId           String           @unique
+  user             User             @relation(fields: [userId], references: [id])
+  fullName         String
+  city             String?
+  birthYear        Int?
+  preferredDomains ActivityDomain[]
+  bio              String?
+  totalPoints      Int              @default(0)
+  eventsCompleted  Int              @default(0)
+
+  enrollments Enrollment[]
+  favorites   Favorite[]
+  pointsLog   PointsTransaction[]
+  checkIns    CheckIn[]
+}
+
+model OrganizationProfile {
+  id           String           @id @default(cuid())
+  userId       String           @unique
+  user         User             @relation(fields: [userId], references: [id])
+  name         String
+  domains      ActivityDomain[]
+  description  String?
+  city         String?
+  contactPhone String?
+  verified     Boolean          @default(false) // cosmetic for demo
+
+  campaigns Campaign[]
+}
+
+model SponsorProfile {
+  id          String  @id @default(cuid())
+  userId      String  @unique
+  user        User    @relation(fields: [userId], references: [id])
+  companyName String
+  sector      String?
+
+  sponsorships Sponsorship[]
+}
+
+model Campaign {
+  id          String              @id @default(cuid())
+  orgId       String
+  org         OrganizationProfile @relation(fields: [orgId], references: [id])
+  title       String
+  description String
+  domain      ActivityDomain
+  city        String?
+  location    String?
+  startAt     DateTime
+  endAt       DateTime
+  capacity    Int                 @default(0) // 0 = unlimited
+  pointsValue Int                 @default(100) // points awarded on attendance
+  status      CampaignStatus      @default(PUBLISHED)
+  coverImage  String? // /public path or null
+
+  needsFunding     Boolean @default(false)
+  fundingGoal      Int? // in DZD
+  sponsorRequested Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  enrollments   Enrollment[]
+  favorites     Favorite[]
+  checkIns      CheckIn[]
+  checkInTokens CheckInToken[]
+  sponsorships  Sponsorship[]
+  donations     Donation[]
+}
+
+model Enrollment {
+  id          String           @id @default(cuid())
+  volunteerId String
+  volunteer   VolunteerProfile @relation(fields: [volunteerId], references: [id])
+  campaignId  String
+  campaign    Campaign         @relation(fields: [campaignId], references: [id])
+  status      EnrollmentStatus @default(ENROLLED)
+  enrolledAt  DateTime         @default(now())
+
+  @@unique([volunteerId, campaignId])
+}
+
+model Favorite {
+  id          String           @id @default(cuid())
+  volunteerId String
+  volunteer   VolunteerProfile @relation(fields: [volunteerId], references: [id])
+  campaignId  String
+  campaign    Campaign         @relation(fields: [campaignId], references: [id])
+  createdAt   DateTime         @default(now())
+
+  @@unique([volunteerId, campaignId])
+}
+
+// What the QR encodes: an opaque, single-use, short-lived token. No PII in the QR.
+model CheckInToken {
+  id          String    @id @default(cuid())
+  token       String    @unique @default(cuid())
+  volunteerId String
+  campaignId  String
+  campaign    Campaign  @relation(fields: [campaignId], references: [id])
+  expiresAt   DateTime
+  usedAt      DateTime?
+  createdAt   DateTime  @default(now())
+}
+
+model CheckIn {
+  id            String           @id @default(cuid())
+  volunteerId   String
+  volunteer     VolunteerProfile @relation(fields: [volunteerId], references: [id])
+  campaignId    String
+  campaign      Campaign         @relation(fields: [campaignId], references: [id])
+  pointsAwarded Int
+  checkedInAt   DateTime         @default(now())
+
+  @@unique([volunteerId, campaignId])
+}
+
+model PointsTransaction {
+  id          String           @id @default(cuid())
+  volunteerId String
+  volunteer   VolunteerProfile @relation(fields: [volunteerId], references: [id])
+  amount      Int
+  reason      String // e.g. "ATTENDED:<campaignId>"
+  createdAt   DateTime         @default(now())
+}
+
+model SponsorshipPack {
+  id          String      @id @default(cuid())
+  tier        SponsorTier @unique
+  priceDZD    Int
+  // benefits rendered from i18n keys by tier; store keys, not translated text
+  benefitKeys String[]
+}
+
+model Sponsorship {
+  id         String             @id @default(cuid())
+  sponsorId  String
+  sponsor    SponsorProfile     @relation(fields: [sponsorId], references: [id])
+  campaignId String
+  campaign   Campaign           @relation(fields: [campaignId], references: [id])
+  tier       SponsorTier
+  amountDZD  Int
+  status     ContributionStatus @default(PENDING)
+  createdAt  DateTime           @default(now())
+}
+
+model Donation {
+  id         String             @id @default(cuid())
+  campaignId String
+  campaign   Campaign           @relation(fields: [campaignId], references: [id])
+  donorName  String // free text; individual donors are not required to have accounts
+  amountDZD  Int
+  method     String             @default("EDAHABIA_MOCK")
+  status     ContributionStatus @default(PENDING)
+  createdAt  DateTime           @default(now())
+}
+
+// Mock only. NEVER store a real card number. last4 + holder name only.
+model SavedCard {
+  id         String @id @default(cuid())
+  userId     String
+  user       User   @relation(fields: [userId], references: [id])
+  holderName String
+  last4      String
+  brand      String @default("EDAHABIA")
+}
+
+model Notification {
+  id         String           @id @default(cuid())
+  userId     String
+  user       User             @relation(fields: [userId], references: [id])
+  type       NotificationType
+  titleKey   String // i18n key; interpolate params at render time
+  bodyKey    String
+  params     Json? // e.g. { campaignTitle: "...", points: 100 }
+  read       Boolean          @default(false)
+  campaignId String?
+  createdAt  DateTime         @default(now())
+}
