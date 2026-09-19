@@ -2,7 +2,7 @@
 
 Status: architecture phase complete, implementation not started.
 Branch: `backend`.
-Primary source of truth: `BACKEND_SPEC.md` (copied into this branch at the repository root). This document describes exactly how that specification will be implemented. Where this document and `BACKEND_SPEC.md` disagree, the disagreement is listed explicitly in section 2.4 (Conflicts) with the chosen resolution. Nothing else deviates.
+Primary source of truth: `docs/BACKEND_SPEC.md`. This document describes exactly how that specification will be implemented. Where this document and `BACKEND_SPEC.md` disagree, the disagreement is listed explicitly in section 2.4 (Conflicts) with the chosen resolution. Nothing else deviates.
 
 ---
 
@@ -32,15 +32,15 @@ The two demo-critical live flows are:
 | `README.md` | One-line title | None |
 | `LICENSE` | License file | None (kept) |
 | `.gitignore` | Standard Next.js gitignore (`node_modules`, `.next`, `.env`, `.env*.local`, `.vercel`, `next-env.d.ts`) | Reused as-is; already correct for this project |
-| `ATHAR_Volunteer_Impact_Platform.md` | Earlier concept document ("ATHAR"): mission lifecycle, check-in/check-out, impact passport, hours, Firebase/Firestore stack, AI mission generator, maps, admin role | Context only. Superseded by `BACKEND_SPEC.md` where they differ (see 2.4) |
+| `ATHAR_Volunteer_Impact_Platform.md` (removed in the pre-integration cleanup) | Earlier concept document ("ATHAR"): mission lifecycle, check-in/check-out, impact passport, hours, Firebase/Firestore stack, AI mission generator, maps, admin role | Context only. Superseded by `BACKEND_SPEC.md` where they differ (see 2.4) |
 | `designref/` (29 images: `.webp`, `.jfif`) | Visual references: Berber motifs, Islamic lanterns, Alhambra patterns, social-app screenshots | Frontend visual reference only. Not used by the backend |
-| `testt.py` | Stray test file (`testtqhtjgsdghj,d`) | Irrelevant. Left untouched |
+| `testt.py` (removed in the pre-integration cleanup) | Stray test file | Irrelevant |
 
 There is no `package.json`, no Next.js application, no Prisma schema, no source code. Remote has a single branch `main`.
 
 ### 2.2 What is irrelevant to the backend
 
-Everything above except `.gitignore`. In particular the Firebase/Firestore data model, check-out flow, volunteer hours, AI features, maps, and the administrator role from the ATHAR concept document are **not** implemented, because `BACKEND_SPEC.md` does not include them. None of these files is modified or deleted.
+Everything above except `.gitignore`. In particular the Firebase/Firestore data model, check-out flow, volunteer hours, AI features, maps, and the administrator role from the ATHAR concept document are **not** implemented, because `BACKEND_SPEC.md` does not include them. None of these files was modified during the build. Before frontend integration, the obsolete `ATHAR_Volunteer_Impact_Platform.md` and `testt.py` were removed and the project documentation moved to `docs/`.
 
 ### 2.3 Version facts checked on 2026-09-19 (npm registry)
 
@@ -162,13 +162,12 @@ Files marked `(existing)` are untouched. Everything else is created on the `back
 ├── .env.example
 ├── .gitignore                         (existing, unchanged)
 ├── .nvmrc                             22
-├── ARCHITECTURE.md
-├── ATHAR_Volunteer_Impact_Platform.md (existing)
-├── BACKEND_SPEC.md
 ├── LICENSE                            (existing)
-├── README.md                          (existing)
-├── designref/                         (existing)
-├── testt.py                           (existing)
+├── README.md                          project status and setup
+├── designref/                         (existing, frontend visual references)
+├── docs/
+│   ├── ARCHITECTURE.md
+│   └── BACKEND_SPEC.md
 ├── components.json                    shadcn config
 ├── eslint.config.mjs
 ├── next.config.ts

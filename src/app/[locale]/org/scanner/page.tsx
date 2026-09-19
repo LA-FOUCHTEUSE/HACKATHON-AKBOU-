@@ -4,7 +4,7 @@ import { QrScanner } from "@/components/org/QrScanner";
 
 export const dynamic = "force-dynamic";
 
-// Server gate (organization only) around the client-side camera scanner (ARCHITECTURE.md, C4).
+// Server gate (organization only) around the client-side camera scanner (docs/ARCHITECTURE.md, C4).
 export default async function ScannerPage() {
   await requireRole("ORGANIZATION");
   const t = await getTranslations("scanner");

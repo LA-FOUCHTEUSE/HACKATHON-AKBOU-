@@ -57,7 +57,7 @@ export async function addParticipantByName(
     }
     const volunteer = matches[0];
 
-    // The organizer adding someone by hand overrides capacity (ARCHITECTURE.md, A9).
+    // The organizer adding someone by hand overrides capacity (docs/ARCHITECTURE.md, A9).
     const enrollment = await prisma.$transaction(async (tx) => {
       const key = { volunteerId_campaignId: { volunteerId: volunteer.id, campaignId: campaign.id } };
       const existing = await tx.enrollment.findUnique({ where: key, select: { status: true } });

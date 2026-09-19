@@ -17,9 +17,9 @@ export const ROLE_HOME: Record<Role, string> = {
 
 export const FEED_STATUSES = ["PUBLISHED", "ONGOING"] as const satisfies readonly CampaignStatus[];
 export const ENROLLABLE_STATUSES = FEED_STATUSES;
-// Statuses that hold a seat against capacity (see ARCHITECTURE.md, conflict C5).
+// Statuses that hold a seat against capacity (see docs/ARCHITECTURE.md, conflict C5).
 export const SEAT_STATUSES = ["ENROLLED", "ATTENDED"] as const satisfies readonly EnrollmentStatus[];
-// Statuses eligible for check-in (see ARCHITECTURE.md, section 21.5).
+// Statuses eligible for check-in (see docs/ARCHITECTURE.md, section 21.5).
 export const CHECKIN_ELIGIBLE_STATUSES = [
   "ENROLLED",
   "WAITLISTED",

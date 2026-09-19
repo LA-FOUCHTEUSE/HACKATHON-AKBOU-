@@ -15,7 +15,7 @@ import {
 const MINUTE = 60_000;
 
 /**
- * Check-in eligibility (ARCHITECTURE.md section 21.5), shared by every attendance path.
+ * Check-in eligibility (docs/ARCHITECTURE.md section 21.5), shared by every attendance path.
  * ENROLLED, WAITLISTED, NO_SHOW -> eligible. ATTENDED -> already. WITHDRAWN or none -> NOT_ENROLLED.
  */
 export function checkInEligibility(status: EnrollmentStatus | null | undefined): "eligible" | "already" {

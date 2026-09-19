@@ -32,7 +32,7 @@ export default async function CheckInPage({ params }: { params: Promise<{ campai
       : null;
 
   const isOpen = (ENROLLABLE_STATUSES as readonly string[]).includes(campaign.status);
-  // Eligibility rules: ARCHITECTURE.md section 21.5 (WAITLISTED volunteers get a QR too).
+  // Eligibility rules: docs/ARCHITECTURE.md section 21.5 (WAITLISTED volunteers get a QR too).
   const eligible = enrollment && (CHECKIN_ELIGIBLE_STATUSES as readonly string[]).includes(enrollment.status);
 
   return (
