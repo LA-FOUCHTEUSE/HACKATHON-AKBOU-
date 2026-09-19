@@ -3,6 +3,8 @@ import type { ActivityDomain, CampaignStatus, EnrollmentStatus, Prisma } from "@
 import { prisma } from "./prisma";
 import { FEED_STATUSES, SEAT_STATUSES } from "./constants";
 import { fundingOf, getFundingTotals } from "./caisse";
+import { notifyMany } from "./notifications";
+import { TX_OPTIONS } from "./points";
 
 /** Serializable campaign shape passed to cards (server and client components). */
 export interface CampaignCardData {
@@ -218,4 +220,33 @@ export async function getParticipants(campaignId: string, orgId: string) {
     return acc;
   }, {});
   return { campaign, rows, counts };
+}
+
+/**
+ * Soft delete (spec 7.2.C): sets CANCELLED and notifies every enrolled or waitlisted volunteer.
+ * Returns the number of notifications, 0 when already cancelled (idempotent), or null when the
+ * campaign does not exist or belongs to another organization.
+ */
+export async function cancelCampaign(org: { id: string; name: string }, campaignId: string): Promise<number | null> {
+  return prisma.$transaction(async (tx) => {
+    const campaign = await tx.campaign.findFirst({
+      where: { id: campaignId, orgId: org.id },
+      select: { id: true, title: true, status: true },
+    });
+    if (!campaign) return null;
+    if (campaign.status === "CANCELLED") return 0;
+
+    await tx.campaign.update({ where: { id: campaign.id }, data: { status: "CANCELLED" } });
+    const enrolled = await tx.enrollment.findMany({
+      where: { campaignId: campaign.id, status: { in: ["ENROLLED", "WAITLISTED"] } },
+      select: { volunteer: { select: { userId: true } } },
+    });
+    return notifyMany(
+      tx,
+      enrolled.map((e) => e.volunteer.userId),
+      "CAMPAIGN_CANCELLED",
+      { campaignTitle: campaign.title, orgName: org.name },
+      campaign.id,
+    );
+  }, TX_OPTIONS);
 }

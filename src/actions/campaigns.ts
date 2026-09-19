@@ -8,6 +8,7 @@ import { campaignCreateSchema, campaignUpdateSchema, idSchema } from "@/lib/vali
 import { notifyMany } from "@/lib/notifications";
 import { RECOMMENDATION_FANOUT_LIMIT } from "@/lib/constants";
 import { TX_OPTIONS } from "@/lib/points";
+import { cancelCampaign } from "@/lib/campaigns";
 import { revalidate } from "@/lib/revalidate";
 
 export async function createCampaign(input: unknown): Promise<ActionResult<{ id: string }>> {
@@ -119,27 +120,7 @@ export async function deleteCampaign(id: string): Promise<ActionResult<{ notifie
     if (!campaignId.ok) return campaignId;
     const org = actor.data.profile;
 
-    const notified = await prisma.$transaction(async (tx) => {
-      const campaign = await tx.campaign.findFirst({
-        where: { id: campaignId.data, orgId: org.id },
-        select: { id: true, title: true, status: true },
-      });
-      if (!campaign) return null;
-      if (campaign.status === "CANCELLED") return 0; // idempotent, no duplicate notices
-
-      await tx.campaign.update({ where: { id: campaign.id }, data: { status: "CANCELLED" } });
-      const enrolled = await tx.enrollment.findMany({
-        where: { campaignId: campaign.id, status: { in: ["ENROLLED", "WAITLISTED"] } },
-        select: { volunteer: { select: { userId: true } } },
-      });
-      return notifyMany(
-        tx,
-        enrolled.map((e) => e.volunteer.userId),
-        "CAMPAIGN_CANCELLED",
-        { campaignTitle: campaign.title, orgName: org.name },
-        campaign.id,
-      );
-    }, TX_OPTIONS);
+    const notified = await cancelCampaign(org, campaignId.data);
     if (notified === null) return fail("NOT_FOUND");
 
     revalidate.feeds();
