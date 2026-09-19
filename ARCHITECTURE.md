@@ -178,7 +178,8 @@ Files marked `(existing)` are untouched. Everything else is created on the `back
 ├── prisma/
 │   ├── schema.prisma
 │   ├── seed.ts                        wipes + inserts, idempotent
-│   └── seed-data.ts                   French seed content (orgs, campaigns, volunteers, sponsors)
+│   ├── seed-data.ts                   French seed content (orgs, campaigns, volunteers, sponsors)
+│   └── verify-seed.ts                 read-only seed checks: ledger invariant, demo rank before/after
 ├── public/
 │   └── campaigns/                     optional static cover images; null = color block placeholder
 ├── scripts/
@@ -835,7 +836,8 @@ Success `200`
     "newTotal": 830,
     "alreadyAttended": false,
     "tierKey": "tier.committed",
-    "rankUp": true
+    "rankUp": true,
+    "wasWaitlisted": false
   }
 }
 ```
@@ -988,11 +990,31 @@ Mandatory fallbacks on the same page (spec 7.2.E and 10):
 
 Rule failures are thrown as `DomainError(code)` inside the transaction so nothing is written, then mapped to the HTTP status table. After commit the route handler runs the `attendance(campaignId)` revalidation group.
 
-Valid enrollment statuses for check-in: `ENROLLED`, `WAITLISTED` (the person physically came and the organizer is scanning them), `NO_SHOW` (late correction), `ATTENDED` (-> idempotent no-op). Only `WITHDRAWN` and absence are rejected.
+Which enrollment statuses may check in is defined once, in section 21.5.
 
 ### 21.4 Security properties
 
 Opaque 192-bit random token, single-use (atomic claim), 2 h TTL, server-side org ownership check, no PII in the QR, nothing decoded from the QR is trusted beyond the lookup key, endpoint requires an organization session.
+
+### 21.5 Check-in eligibility by enrollment status (decision)
+
+**WAITLISTED volunteers ARE eligible for check-in.** This applies identically to all three attendance paths, because they share one eligibility function (`assertCheckInEligible(status)` in `lib/checkin.ts`) and one engine (`awardAttendance`).
+
+| Enrollment status | Can get a QR (`issueCheckInToken`) | QR scan / manual token (`/api/checkin`) | Manual mark (`markAttendedManually`) |
+|---|---|---|---|
+| `ENROLLED` | yes | yes -> `ATTENDED`, points awarded | yes -> `ATTENDED`, points awarded |
+| `WAITLISTED` | **yes** (page shows a notice: "Vous êtes sur liste d'attente : l'organisateur confirme votre participation sur place.") | **yes** -> `ATTENDED`, points awarded | **yes** -> `ATTENDED`, points awarded |
+| `NO_SHOW` (P2 status) | yes | yes (late correction) | yes |
+| `ATTENDED` | no, page shows "déjà pointé" with the points received | idempotent: `200`, `alreadyAttended: true`, 0 points | idempotent: same result |
+| `WITHDRAWN` | no -> `NOT_ENROLLED` | no -> `409 NOT_ENROLLED` | no -> `NOT_ENROLLED` |
+| no enrollment | no -> `NOT_ENROLLED` | no -> `409 NOT_ENROLLED` (walk-ins off, `ALLOW_WALK_IN = false`) | not reachable (needs an enrollment id) |
+
+Rationale:
+
+- The spec's rule is "the volunteer has an Enrollment for that campaign". A waitlisted volunteer has one; `WITHDRAWN` is the only status that means the volunteer cancelled.
+- The waitlist is a planning signal, not an access control. At the event the organizer is the one holding the scanner, so the organizer decides whether to admit a waitlisted person by scanning or not scanning. Rejecting someone standing in front of the organizer would be a dead end, which the spec explicitly forbids for the demo.
+- Consequence, accepted: checking in a waitlisted volunteer can push occupied seats (`ENROLLED` + `ATTENDED`) above `capacity`. Capacity only limits new online enrollments; it never blocks physical attendance.
+- The scanner result card shows a "liste d'attente" label when the enrollment was `WAITLISTED` before check-in (`AttendanceResult.wasWaitlisted: true`), so the organizer sees it.
 
 ---
 
@@ -1234,7 +1256,9 @@ Total: 23 campaigns (spec asks for about 15-20; the extra ones exist so every mo
 
 No two volunteers share `(totalPoints, eventsCompleted)`.
 
-Demo story: the demo volunteer is rank 7 with 680 points. Checking in to C01 (+150) gives 830 points, crossing 800: tier becomes `committed`, a `RANK_UP` notification appears, and the national rank moves from 7 to 6 (above Walid Hamidi, 810).
+Demo story (intended): the demo volunteer has 680 points. Checking in to C01 (+150) gives 830 points, crossing 800: tier becomes `committed` and a `RANK_UP` notification appears.
+
+The rank before and after is **not assumed**. It is computed against the real seeded database by `npm run seed:verify` (`prisma/verify-seed.ts`), which uses the same `getNationalRank` ordering as the app, simulates the +150 without writing, and fails if the demo volunteer does not cross a tier. Verified result: see section 29.7.
 
 ### 29.5 Sponsors (4), all fictional
 
@@ -1423,6 +1447,7 @@ postinstall    prisma generate
 db:push        prisma db push
 db:seed        prisma db seed
 db:reset       prisma db push --force-reset && prisma db seed
+seed:verify    tsx prisma/verify-seed.ts
 ```
 
 ---
@@ -1505,7 +1530,7 @@ Proportionate to a hackathon; the build and the rehearsed demo are the main gate
 
 1. **Static**: `npm run typecheck`, `npm run build` (must be green before every push), `npm run check:rtl`.
 2. **Unit** (`tsx --test`, no extra framework): `src/lib/tiers.test.ts` covers tier boundaries (0, 299, 300, 799, 800, 1799, 1800, 3999, 4000, 10000) and progress. Pure helpers only.
-3. **Scripted DB smoke** (P1, `scripts/smoke.ts`, run locally against Neon, then re-seed): issue token for the demo volunteer -> `redeemToken` -> assert points 830, tier committed, `RANK_UP` exists, rank 6 -> redeem again -> `TOKEN_USED` -> `markAttendedManually` on same enrollment -> `alreadyAttended`. Also cancel C02 -> count `CAMPAIGN_CANCELLED` rows. Calls `lib` functions directly (no HTTP, no cookie forging).
+3. **Scripted DB smoke** (P1, `scripts/smoke.ts`, run locally against Neon, then re-seed): issue token for the demo volunteer -> `redeemToken` -> assert points 830, tier committed, `RANK_UP` exists, rank equals the post-check-in rank printed by `seed:verify` -> redeem again -> `TOKEN_USED` -> `markAttendedManually` on same enrollment -> `alreadyAttended`. Also cancel C02 -> count `CAMPAIGN_CANCELLED` rows. Calls `lib` functions directly (no HTTP, no cookie forging).
 4. **Manual acceptance**: every spec acceptance criterion (section 7 of the spec) walked on the deployed URL, on two real phones for the QR flow.
 
 ---
@@ -1571,7 +1596,8 @@ Cut from the bottom of P2 upward if time runs out. Never cut a P0 fallback (manu
 - [ ] Warm Neon 30-60 s before presenting (open `/fr/login`, which queries the DB).
 - [ ] Org phone: logged in as `org.demo@tawa3.dz` on the production URL, camera permission granted on `/fr/org/scanner`, tested in venue lighting.
 - [ ] Volunteer phone: logged in as `benevole.demo@tawa3.dz`, `/fr/volunteer/checkin/<C01 id>` shows a QR, screen brightness up.
-- [ ] Happy path rehearsed: volunteer enrolls in a campaign -> shows QR (C01) -> org scans -> card shows name, +150, 830 -> volunteer profile shows 830, tier "Engagé", rank 6, inbox has "points" and "palier" notifications.
+- [ ] `npm run seed:verify` passes against the production database and its printed ranks match section 29.7.
+- [ ] Happy path rehearsed: volunteer enrolls in a campaign -> shows QR (C01) -> org scans -> card shows name, +150, 830 -> volunteer profile shows 830, tier "Engagé", the rank printed by `seed:verify`, inbox has "points" and "palier" notifications.
 - [ ] Manual token fallback: type `TAWA3-DEMO-7K2Q9XHM` (only if the live QR was not used on C01; otherwise it answers "already checked in", which is also a valid demonstration).
 - [ ] Manual attendance from the participant list works.
 - [ ] Org creates a campaign live -> appears in volunteer feed; cancel it -> volunteer inbox shows the cancellation.
@@ -1591,7 +1617,7 @@ Cut from the bottom of P2 upward if time runs out. Never cut a P0 fallback (manu
 | A2 | Enrollment notification is sent only when the result is `ENROLLED`, not `WAITLISTED`. |
 | A3 | Re-enrolling after `WITHDRAWN` reuses the same row (unique constraint) and resets `enrolledAt`. |
 | A4 | Withdrawal and removal are forbidden after `ATTENDED`; points are never removed. |
-| A5 | Check-in accepts enrollments in `ENROLLED`, `WAITLISTED`, `NO_SHOW`; rejects `WITHDRAWN` and missing (walk-ins off, `ALLOW_WALK_IN = false`). |
+| A5 | Check-in accepts enrollments in `ENROLLED`, `WAITLISTED`, `NO_SHOW`; rejects `WITHDRAWN` and missing (walk-ins off, `ALLOW_WALK_IN = false`). WAITLISTED eligibility is a documented decision, see section 21.5. |
 | A6 | A check-in token is reused while more than 10 minutes remain; TTL is 120 minutes. |
 | A7 | Check-in is allowed while the campaign is `PUBLISHED`, `ONGOING` or `COMPLETED` (late scanning after marking completed); rejected for `DRAFT` and `CANCELLED`. |
 | A8 | Cancellation notifies `ENROLLED` and `WAITLISTED` volunteers; enrollment rows keep their status. |
