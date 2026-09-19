@@ -125,7 +125,7 @@ export const enrollmentIdSchema = z.object({ enrollmentId: idSchema });
 
 export const sponsorshipSchema = z.object({
   campaignId: idSchema,
-  tier: z.enum(SPONSOR_TIERS),
+  tier: z.enum(SPONSOR_TIERS, { error: "validation.invalid" }),
   cardId: idSchema,
 });
 
@@ -135,10 +135,14 @@ export const donationSchema = z.object({
   amountDZD: z.coerce.number({ error: "validation.invalid" }).int("validation.invalid").min(100, "validation.amountMin").max(1_000_000, "validation.amountMax"),
 });
 
-export const payRequestSchema = z.discriminatedUnion("kind", [
-  sponsorshipSchema.extend({ kind: z.literal("SPONSORSHIP") }),
-  donationSchema.extend({ kind: z.literal("DONATION") }),
-]);
+export const payRequestSchema = z.discriminatedUnion(
+  "kind",
+  [
+    sponsorshipSchema.extend({ kind: z.literal("SPONSORSHIP") }),
+    donationSchema.extend({ kind: z.literal("DONATION") }),
+  ],
+  { error: "validation.invalid" },
+);
 
 export function fieldErrorsOf(error: z.ZodError): Record<string, string[] | undefined> {
   return z.flattenError(error).fieldErrors as Record<string, string[] | undefined>;

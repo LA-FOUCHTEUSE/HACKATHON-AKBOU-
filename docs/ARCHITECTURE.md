@@ -182,7 +182,8 @@ Files marked `(existing)` are untouched. Everything else is created on the `back
 ├── public/
 │   └── campaigns/                     optional static cover images; null = color block placeholder
 ├── scripts/
-│   └── smoke.ts                       P1 only: scripted DB smoke test (section 38)
+│   ├── check-rtl.sh
+│   └── smoke.ts                       scripted DB smoke test (section 38)
 └── src/
     ├── proxy.ts                       next-intl routing (spec: middleware.ts, see C2)
     ├── i18n/
@@ -1549,7 +1550,7 @@ Proportionate to a hackathon; the build and the rehearsed demo are the main gate
 
 1. **Static**: `npm run typecheck`, `npm run build` (must be green before every push), `npm run check:rtl`.
 2. **Unit** (`tsx --test`, no extra framework): `src/lib/tiers.test.ts` covers tier boundaries (0, 299, 300, 799, 800, 1799, 1800, 3999, 4000, 10000) and progress. Pure helpers only.
-3. **Scripted DB smoke** (P1, `scripts/smoke.ts`, run locally against Neon, then re-seed): issue token for the demo volunteer -> `redeemToken` -> assert points 830, tier committed, `RANK_UP` exists, rank equals the post-check-in rank printed by `seed:verify` -> redeem again -> `TOKEN_USED` -> `markAttendedManually` on same enrollment -> `alreadyAttended`. Also cancel C02 -> count `CAMPAIGN_CANCELLED` rows. Calls `lib` functions directly (no HTTP, no cookie forging).
+3. **Scripted DB smoke** (P1, `npm run smoke` = `tsx --conditions react-server scripts/smoke.ts`; it creates its own fixtures and deletes them at the end, so seeded data is untouched and no re-seed is needed): on dedicated fixtures (never the demo volunteer), it issues and redeems tokens (opaque token, ownership, expiry, single use, concurrent double scan, waitlisted volunteer, tier-crossing `RANK_UP`), runs the manual attendance path through the same engine, cancels a campaign and counts `CAMPAIGN_CANCELLED` rows, exercises donations, sponsorships, declined and crashing providers and the caisse totals, and checks that card fields are stripped, the points ledger matches `totalPoints`, and the leaderboard order equals `getNationalRank`. It calls `lib` functions directly (no HTTP, no cookie forging). The demo volunteer's rank before/after is covered by `seed:verify`.
 4. **Manual acceptance**: every spec acceptance criterion (section 7 of the spec) walked on the deployed URL, on two real phones for the QR flow.
 
 ---
@@ -1693,4 +1694,33 @@ Implementation details decided during P0 (no spec conflict):
 - The session cookie is `Secure` in production. Phone testing over a LAN IP therefore needs `npm run dev:https` or the deployed HTTPS URL.
 - `NextIntlClientProvider` currently ships all message namespaces to the client (about 20 KB). Acceptable for the demo; can be narrowed to client namespaces later.
 - English and Arabic are complete for the P0 namespaces (navigation, campaigns, profile, tiers, inbox, notifications, check-in, scanner, errors, validation, landing, onboarding). The organization pages, caisse, sponsor and donation namespaces fall back to French until the P2 translation pass.
-- P1 items not started yet: payments (`lib/payments.ts`, `lib/contributions.ts`), `/api/pay`, sponsor browse/checkout, donate form, caisse page, `scripts/smoke.ts`.
+- P1 was implemented afterwards, see Appendix D.
+
+## Appendix D. P1 implementation notes
+
+Status: P1 code complete on `backend`, verified against the real Neon database. Vercel deployment is still pending.
+
+Delivered:
+
+- `lib/payments.ts` (spec section 9 code: `PaymentProvider`, `MockEdahabiaProvider` with a 900 ms delay, exported `payments`), `lib/contributions.ts` (`processSponsorship`, `processDonation`), Server Actions `purchaseSponsorship` and `donate`, and `POST /api/pay`. The action and the route call the same library functions, so there is a single payment path.
+- Pages: `/sponsor/browse` (packs and sponsorable campaigns), `/sponsor/checkout/[campaignId]` (choose pack, choose saved mock card, confirm), `/org/caisse`, the donate form and sponsor call-to-action on `/campaigns/[id]`. Inbox (volunteer and organization) and `/leaderboard` were already delivered in P0 and were re-verified.
+- `npm run smoke`: 48 checks, see section 38.
+
+Behavior worth knowing:
+
+- The payable amount is always read from `SponsorshipPack.priceDZD`. A client-sent `amountDZD` on a sponsorship request is ignored (verified: sent 1, charged 75 000).
+- Order of operations: the PENDING row is written, the mock charge runs outside any transaction, then CONFIRMED and the organization notification are written atomically. A declined charge or a provider crash leaves the row FAILED; FAILED and PENDING rows never count in the caisse (smoke test).
+- Only saved-card ids travel from the browser. Card number, CVV and any other unknown field are stripped by Zod and never read or stored. Every seeded card stores exactly four digits.
+- The card must belong to the paying sponsor (`CARD_NOT_FOUND` otherwise). A sponsor can only sponsor `PUBLISHED` or `ONGOING` campaigns; cancelled, draft and completed campaigns return `CAMPAIGN_CLOSED` (API) or 404 (checkout page).
+- Donations are public. A logged-in user's first saved card is used for the mock charge when there is one; otherwise a mock card built from the donor name.
+- No idempotency key exists on payments (not in the spec): a double submit creates two contributions. The checkout and donate buttons are disabled while a request is pending.
+- Campaign cancellation logic moved unchanged from the Server Action into `cancelCampaign()` in `lib/campaigns.ts` so the smoke test can cover it; the action is now a thin wrapper.
+- Invalid enum values (`tier`, `kind`) return the i18n key `validation.invalid`, like every other validation message.
+- English and Arabic for the organization, caisse, sponsor, donation and pack namespaces still fall back to French until the P2 translation pass.
+
+Verification against Neon (2026-09-19):
+
+- `next build` green, `tsc` strict, lint (0 errors), `check:rtl`, unit tests, `seed:verify` (rank 7 to 6 unchanged), `npm run smoke` (48 checks, row counts identical before and after).
+- `POST /api/pay` over HTTP: anonymous donation 200, bad amount 400, unknown campaign 404, cancelled or draft campaign 409, sponsorship anonymous 401, as volunteer 403, another user's card 404, invalid tier 400, valid PRO sponsorship 200 at 75 000, bad JSON 400, GET 405.
+- Server Actions over HTTP: `donate` field errors and success, `purchaseSponsorship` forbidden / missing card / invalid tier / MAX success at 200 000.
+- Every P1 page returned 200 in `fr`, `en` and `ar` for the right roles; anonymous, volunteer-to-sponsor and sponsor-to-org access redirect to `/login`. The caisse, organization inbox and funding progress bars showed the new contributions.

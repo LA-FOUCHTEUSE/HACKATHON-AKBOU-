@@ -12,7 +12,7 @@ The frontend is being developed separately on the `front` branch and will be int
 - next-intl: French (default), English, Arabic with full RTL
 - Tailwind CSS v4 with logical properties only, shadcn/ui
 - QR: `qrcode` (volunteer side), `html5-qrcode` with manual fallback (organization side)
-- Payments are mocked behind a `PaymentProvider` interface (P1)
+- Payments are mocked behind a `PaymentProvider` interface (`MockEdahabiaProvider`); no real payment processing
 
 Documentation:
 
@@ -26,7 +26,7 @@ Documentation:
 | P0 (skeleton, schema, seed, quick login, role gating, volunteer and organization flows, QR check-in with fallbacks, attendance engine, gamification, i18n and RTL) | Implemented |
 | P0 verification | Production build green, type check green, unit tests green, RTL check green; check-in API, Server Actions and signups tested over HTTP (see `docs/ARCHITECTURE.md`, Appendix C) |
 | Database | Real Neon database connected, schema pushed, seeded; `seed:verify` passes |
-| P1 (sponsor checkout, donations, caisse, `/api/pay`, smoke test) | Pending |
+| P1 (sponsor browse and checkout, donations, caisse, `/api/pay`, inbox, leaderboard, smoke test) | Implemented and verified against Neon (`npm run smoke`: 48 checks; API and pages tested over HTTP) |
 | Vercel deployment | Pending |
 
 Verified demo numbers: the demo volunteer goes from 680 points (rank 7 of 12, tier contributor) to 830 points (rank 6 of 12, tier committed) after one check-in.
@@ -63,6 +63,7 @@ Environment variables (`.env`, never committed):
 | `check:rtl` | Fails on physical Tailwind direction classes (`pl-`, `mr-`, `left-`, ...) |
 | `db:push`, `db:seed`, `db:reset` | Schema sync and demo data (seed and reset wipe existing data) |
 | `seed:verify` | Read-only verification of the seeded data |
+| `smoke` | Scripted end-to-end DB checks (check-in, attendance, cancellation, payments, caisse, ranking); creates and removes its own fixtures |
 
 ## Demo accounts
 
