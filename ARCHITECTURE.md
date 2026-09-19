@@ -241,6 +241,7 @@ Files marked `(existing)` are untouched. Everything else is created on the `back
     │   ├── session.ts                 login, logout, getCurrentUser, requireRole, getActor
     │   ├── points.ts                  awardAttendance (single source of truth), getNationalRank, getLeaderboard
     │   ├── tiers.ts                   TIERS table + getTier/getTierProgress (pure, client-safe)
+    │   ├── ranking.ts                 national ranking order + rank query (pure; shared with prisma/verify-seed.ts)
     │   ├── checkin.ts                 issueToken, redeemToken
     │   ├── payments.ts                PaymentProvider, MockEdahabiaProvider, payments (spec verbatim)
     │   ├── contributions.ts           processSponsorship, processDonation
@@ -250,25 +251,29 @@ Files marked `(existing)` are untouched. Everything else is created on the `back
     │   ├── volunteers.ts              profile stats, findVolunteersByName
     │   ├── domains.ts                 ACTIVITY_DOMAINS list + i18n keys (pure, client-safe)
     │   ├── validation.ts              every Zod schema
-    │   ├── result.ts                  ActionResult type, ok(), fail()
-    │   ├── errors.ts                  DomainError, ErrorCode, toFailure()
+    │   ├── result.ts                  ActionResult type, ErrorCode list, ok(), fail() (client-safe)
+    │   ├── errors.ts                  DomainError, toFailure(), HTTP status map (server-only)
+    │   ├── action.ts                  runAction() wrapper + parse() helper for Server Actions (server-only)
+    │   ├── dates.ts                   Algeria-time conversion for datetime-local inputs (client-safe)
     │   ├── revalidate.ts              named revalidation groups
     │   ├── constants.ts               TOKEN_TTL_MINUTES, ALLOW_WALK_IN, limits (client-safe)
     │   ├── utils.ts                   cn() for shadcn (client-safe)
     │   ├── rewards.ts                 P2 only: static rewards catalog (client-safe)
     │   └── tiers.test.ts              unit tests (node:test via tsx)
     └── components/
-        ├── ui/                        shadcn primitives (audited for logical properties)
-        ├── layout/                    SiteHeader, RoleNav, LanguageSwitcher ("use client"), UnreadBadge
-        ├── campaigns/                 CampaignCard, DomainBadge, CapacityMeter, FundingProgress,
+        ├── ui/                        shadcn primitives (button, card, input, label, textarea, badge, checkbox, separator)
+        ├── forms/                     Field + FormError ("use client"), DomainPicker ("use client")
+        ├── layout/                    SiteHeader (server: role nav + unread badge), LanguageSwitcher ("use client")
+        ├── campaigns/                 CampaignCard, DomainBadge, FundingProgress,
         │                              EnrollButton ("use client", useOptimistic), FavoriteButton ("use client", useOptimistic),
-        │                              CampaignForm ("use client")
-        ├── volunteer/                 CheckInQr ("use client"), TierProgress, PointsHistory, SignupForm ("use client")
-        ├── org/                       QrScanner ("use client"), ManualTokenForm ("use client"), CheckInResultCard,
-        │                              ParticipantTable, AddParticipantForm ("use client"), OrgSignupForm ("use client")
-        ├── sponsor/                   PackCard, CheckoutForm ("use client")
-        ├── donations/                 DonateForm ("use client")
-        └── notifications/             InboxList, NotificationItem, MarkAllReadButton ("use client")
+        │                              CampaignForm ("use client", create + edit)
+        ├── volunteer/                 CheckInQr ("use client"), TierProgress, SignupForm ("use client")
+        ├── org/                       QrScanner ("use client": camera + manual token form + result card),
+        │                              ParticipantActions ("use client"), AddParticipantForm ("use client"),
+        │                              OrgCampaignRow, CancelCampaignButton ("use client"), OrgSignupForm ("use client")
+        ├── sponsor/                   P1: PackCard, CheckoutForm ("use client")
+        ├── donations/                 P1: DonateForm ("use client")
+        └── notifications/             InboxList (server, renders keys + params), MarkReadButtons ("use client")
 ```
 
 ---
@@ -279,7 +284,8 @@ Files marked `(existing)` are untouched. Everything else is created on the `back
 |---|---|---|---|
 | `src/lib/prisma.ts`, `session.ts`, `points.ts`, `checkin.ts`, `payments.ts`, `contributions.ts`, `caisse.ts`, `notifications.ts`, `campaigns.ts`, `volunteers.ts`, `revalidate.ts` | `import "server-only"` at top | Prisma, `next/headers`, `node:crypto` | anything client |
 | `src/lib/tiers.ts`, `domains.ts`, `constants.ts`, `utils.ts`, `result.ts` | none (pure) | `import type` from `@prisma/client` only | Prisma runtime, `next/headers` |
-| `src/lib/validation.ts`, `errors.ts` | none (pure) | zod | Prisma runtime |
+| `src/lib/validation.ts`, `ranking.ts` | none (pure) | zod / `import type` from `@prisma/client` | Prisma runtime |
+| `src/lib/errors.ts` | `import "server-only"` | `Prisma` error classes | - |
 | `src/actions/*` | `"use server"` | `lib/*` | client components |
 | `src/app/**/page.tsx`, `layout.tsx` | Server Component (default) | `lib/*`, `actions/*`, components | - |
 | `src/app/api/**/route.ts` | server | `lib/*` | - |
@@ -1286,6 +1292,20 @@ Demo sponsor login: `sponsor.demo@tawa3.dz` (Soummam Agro SARL).
 
 ---
 
+### 29.7 Verified demo numbers
+
+Computed by `npm run seed:verify` against the actually seeded database (local PostgreSQL 17, 2026-09-19), using the app's own `src/lib/ranking.ts` and `src/lib/tiers.ts`:
+
+```
+Demo volunteer: Yanis Amrouche
+Demo campaign: Nettoyage des berges de la Soummam à Akbou (+150 points)
+Before check-in: 680 points, 6 events, tier.contributor, national rank 7 of 12
+After check-in:  830 points, 7 events, tier.committed, national rank 6 of 12
+seed:verify passed
+```
+
+The script also checks: ledger sum equals `totalPoints` for all 12 volunteers; no two volunteers share `(totalPoints, eventsCompleted)`; the demo token exists, is unused, unexpired and belongs to the demo volunteer; the demo campaign is `ONGOING`, owned by the demo organization, with the demo volunteer `ENROLLED`; the waitlist campaign is full. It must be re-run after seeding Neon (pre-demo QA), because ranks depend on the data actually present.
+
 ## 30. Mockup Content Mapping
 
 Principle: the mockups describe **activities**, which are campaign content (title, description, domain, city). None of them introduces a backend feature beyond what `BACKEND_SPEC.md` already defines (campaign CRUD, enrollment, check-in, points, funding). No model is added for any activity.
@@ -1652,3 +1672,26 @@ Cut from the bottom of P2 upward if time runs out. Never cut a P0 fallback (manu
 | P0 priorities clear | Yes (section 39) |
 | No unnecessary systems invented | Yes: no photo, media, sports, health, skills-matching, admin, scheduler or migration systems |
 | No co-author or tool attribution in commits or docs | Yes |
+
+## Appendix C. P0 implementation notes
+
+Status: P0 code complete on `backend`, verified locally against PostgreSQL 17 (production build + HTTP tests). Not yet deployed: the Vercel deploy needs the Neon connection strings and a Vercel project (section 32/33).
+
+What was verified locally:
+
+- `next build` green; every DB/session route is dynamic (`ƒ`), only `/_not-found` is static.
+- `tsc` strict clean, `npm test` (tier boundaries) green, `check:rtl` green (and proven to fail on `pl-`, `ml-`, `right-`, `text-left`), no emoji in `src/`, `prisma/`, docs.
+- `/api/checkin`: 401 anonymous, 403 volunteer, 400 bad JSON, 404 unknown token, 403 other organization's token, 200 with `{ volunteerName, pointsAwarded: 150, newTotal: 830, tierKey: "tier.committed", rankUp: true }` for the demo token, 409 on reuse.
+- Profile after check-in shows 830 points and rank "6 sur 12"; inbox shows the points and tier notifications. `<html lang="ar" dir="rtl">` on Arabic pages.
+- Server Actions over HTTP: enroll into the full campaign -> `WAITLISTED` (idempotent on repeat); waitlisted volunteer gets a QR token (reused on reload), scanned by the owning org -> 200 with `wasWaitlisted: true`; withdraw / re-enroll; withdraw after attendance -> `ALREADY_ATTENDED`; favorite toggles; `markAttendedManually` awards once then returns `alreadyAttended`; volunteer calling an org action -> `FORBIDDEN`; add participant by name (case-insensitive) and unknown name; create campaign (appears in public feed), cancel (1 volunteer notified), cancel again (0, idempotent); both signups create rows, set the cookie and redirect to the role home.
+- Ledger invariant (`sum(PointsTransaction) == totalPoints`) still holds after all these writes.
+
+Implementation details decided during P0 (no spec conflict):
+
+- `lib/action.ts` (`runAction`, `parse`) and `lib/ranking.ts` were added: the first centralises the action pipeline, the second keeps the ranking order in a pure module so `prisma/verify-seed.ts` uses the exact same code as the app (modules marked `server-only` cannot run in a plain Node script).
+- Campaign dates are entered and shown in Algeria time (`lib/dates.ts`) regardless of device or server time zone; the form sends absolute ISO timestamps.
+- The scanner's manual token form and result card live inside `QrScanner` (one client state machine) instead of separate files.
+- The session cookie is `Secure` in production. Phone testing over a LAN IP therefore needs `npm run dev:https` or the deployed HTTPS URL.
+- `NextIntlClientProvider` currently ships all message namespaces to the client (about 20 KB). Acceptable for the demo; can be narrowed to client namespaces later.
+- English and Arabic are complete for the P0 namespaces (navigation, campaigns, profile, tiers, inbox, notifications, check-in, scanner, errors, validation, landing, onboarding). The organization pages, caisse, sponsor and donation namespaces fall back to French until the P2 translation pass.
+- P1 items not started yet: payments (`lib/payments.ts`, `lib/contributions.ts`), `/api/pay`, sponsor browse/checkout, donate form, caisse page, `scripts/smoke.ts`.
