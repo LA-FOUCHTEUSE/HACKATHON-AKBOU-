@@ -342,7 +342,8 @@
     "amount": "Montant",
     "type": "Type",
     "date": "Date",
-    "empty": "Aucune contribution pour le moment."
+    "empty": "Aucune contribution pour le moment.",
+    "noCampaigns": "Aucune campagne avec financement pour le moment."
   },
   "sponsor": {
     "browseTitle": "Campagnes à soutenir",
@@ -358,12 +359,21 @@
     "processing": "Paiement en cours...",
     "success": "Merci ! Votre parrainage est confirmé.",
     "transaction": "Référence de transaction : {id}",
-    "mockNotice": "Paiement simulé : aucune somme n'est réellement débitée."
+    "mockNotice": "Paiement simulé : aucune somme n'est réellement débitée.",
+    "backToBrowse": "Retour aux campagnes à soutenir",
+    "supportCampaign": "Soutenir cette campagne",
+    "noCampaigns": "Aucune campagne ne recherche de soutien pour le moment."
   },
   "packs": {
-    "STARTER": { "name": "Pack Starter" },
-    "PRO": { "name": "Pack Pro" },
-    "MAX": { "name": "Pack Max" },
+    "STARTER": {
+      "name": "Pack Starter"
+    },
+    "PRO": {
+      "name": "Pack Pro"
+    },
+    "MAX": {
+      "name": "Pack Max"
+    },
     "benefits": {
       "thanksPost": "Remerciement public sur la page de l'association",
       "logoOnCampaignPage": "Logo affiché sur la page de la campagne",
@@ -380,7 +390,10 @@
     "submit": "Donner avec Edahabia",
     "processing": "Paiement en cours...",
     "success": "Merci pour votre don de {amount} !",
-    "mockNotice": "Paiement simulé : aucune somme n'est réellement débitée."
+    "mockNotice": "Paiement simulé : aucune somme n'est réellement débitée.",
+    "presets": "Montants suggérés",
+    "closed": "Cette campagne n'accepte plus de dons.",
+    "fundingTitle": "Financement de la campagne"
   },
   "errors": {
     "UNAUTHENTICATED": "Veuillez vous connecter.",

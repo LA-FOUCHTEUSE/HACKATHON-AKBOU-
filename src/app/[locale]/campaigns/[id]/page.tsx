@@ -8,6 +8,9 @@ import { DomainBadge } from "@/components/campaigns/DomainBadge";
 import { FundingProgress } from "@/components/campaigns/FundingProgress";
 import { EnrollButton } from "@/components/campaigns/EnrollButton";
 import { FavoriteButton } from "@/components/campaigns/FavoriteButton";
+import { DonateForm } from "@/components/donations/DonateForm";
+import { Button } from "@/components/ui/button";
+import { Link } from "@/i18n/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -81,7 +84,20 @@ export default async function CampaignDetailPage({ params }: { params: Promise<{
 
       {c.needsFunding || c.sponsorRequested ? (
         <section className="space-y-4 rounded-lg border p-4">
+          <h2 className="text-lg font-semibold">{t("donation.fundingTitle")}</h2>
           <FundingProgress raised={c.raised} goal={c.fundingGoal} />
+          {!open ? (
+            <p className="text-sm text-muted-foreground">{t("donation.closed")}</p>
+          ) : (
+            <>
+              {user?.role === "SPONSOR" ? (
+                <Button asChild>
+                  <Link href={`/sponsor/checkout/${c.id}`}>{t("sponsor.supportCampaign")}</Link>
+                </Button>
+              ) : null}
+              <DonateForm campaignId={c.id} defaultName={user?.displayName ?? ""} />
+            </>
+          )}
         </section>
       ) : null}
     </article>
