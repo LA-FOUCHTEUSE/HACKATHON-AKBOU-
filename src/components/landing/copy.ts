@@ -7,6 +7,7 @@ export const landingCopy = {
       { label: "Pour les entreprises", href: "#entreprises" },
     ],
     signIn: "Se connecter",
+    signInHref: "/login",
     menu: "Menu",
     close: "Fermer",
     languages: [
@@ -19,21 +20,21 @@ export const landingCopy = {
   hero: {
     wordmark: "TIWIZI",
     tagline:
-      "Le bénévolat n'est pas un concept importé. C'est la tiwizi — l'entraide collective, remise en ligne.",
+      "Le pouvoir de l'entraide",
     volunteer: {
       label: "Je suis bénévole",
       headline: "Contribuez. Aidez. Progressez.",
       cta: "Trouver une campagne",
-      href: "#campagnes",
+      href: "/campaigns",
     },
     organization: {
       label: "Je suis une association",
       headline: "Organisez. Mobilisez. Financez.",
       cta: "Créer une campagne",
-      href: "#methode",
+      href: "/org/onboarding",
     },
     thirdPath: "Vous êtes une entreprise ? Soutenez une campagne",
-    thirdPathHref: "#entreprises",
+    thirdPathHref: "/sponsor/browse",
     scrollCue: "Découvrir",
   },
 
@@ -103,6 +104,7 @@ export const landingCopy = {
     imagePlaceholder: "Visuel de campagne",
     participantsSuffix: "participants",
     viewCampaign: "Voir la campagne",
+    viewCampaignHref: "/campaigns",
     items: [
       {
         domain: "Environnement",
@@ -162,6 +164,7 @@ export const landingCopy = {
     priceSuffix: "DZD / campagne",
     mostChosen: "Le plus choisi",
     cta: "Choisir ce pack",
+    ctaHref: "/sponsor/browse",
     packs: [
       {
         name: "Starter",
@@ -207,14 +210,14 @@ export const landingCopy = {
           { label: "Campagnes", href: "#campagnes" },
           { label: "Comment ça marche", href: "#methode" },
           { label: "Pour les entreprises", href: "#entreprises" },
-          { label: "Classement national", href: "#top" },
+          { label: "Classement national", href: "/leaderboard" },
         ],
       },
       {
         title: "Ressources",
         links: [
           { label: "Guide du bénévole", href: "#top" },
-          { label: "Créer une association", href: "#top" },
+          { label: "Créer une association", href: "/org/onboarding" },
           { label: "Questions fréquentes", href: "#top" },
           { label: "Journal", href: "#top" },
         ],

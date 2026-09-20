@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { Link } from "@/i18n/navigation";
 import { landingCopy } from "./copy";
 import { AlgeriaMap } from "./AlgeriaMap";
 import { ContourField } from "./ContourField";
@@ -206,12 +207,12 @@ export function SplitHero() {
         </div>
 
         <div className="px-5 text-center">
-          <a
+          <Link
             href={hero.thirdPathHref}
             className="border-b border-transparent text-sm text-ink-muted transition-colors hover:border-ink-muted"
           >
             {hero.thirdPath}
-          </a>
+          </Link>
         </div>
       </div>
     </section>
@@ -220,7 +221,7 @@ export function SplitHero() {
 
 function HeroCopy({ inverted = false }: { inverted?: boolean }) {
   return (
-    <div className="absolute inset-x-0 top-[34%] -translate-y-1/2 text-center">
+    <div className="absolute inset-x-0 top-[31%] -translate-y-1/2 text-center">
       <h1
         className="font-wordmark m-0 text-[clamp(3.5rem,9vw,8rem)] leading-none tracking-[0.04em]"
         style={{ color: inverted ? "#ffffff" : "var(--ink)" }}
@@ -228,7 +229,7 @@ function HeroCopy({ inverted = false }: { inverted?: boolean }) {
         {hero.wordmark}
       </h1>
       <p
-        className="mx-auto mt-3 max-w-[42ch] text-[1.0625rem] leading-relaxed"
+        className="mx-auto mt-1 max-w-[42ch] text-[1.0625rem] leading-relaxed"
         style={{ color: inverted ? "rgba(255,255,255,0.92)" : "var(--ink-muted)" }}
       >
         {hero.tagline}
@@ -294,12 +295,12 @@ function HoverPanel({
         {headline}
       </h2>
       <div style={riseStyle(active, 60)}>
-        <a
+        <Link
           href={href}
-          className="inline-block rounded-full bg-white px-7 py-3.5 text-[0.9375rem] font-medium text-ink transition-[box-shadow,transform] duration-200 hover:-translate-y-px hover:shadow-[0_0_32px_rgba(255,255,255,0.25)]"
+          className="pointer-events-auto inline-block rounded-full bg-white px-7 py-3.5 text-[0.9375rem] font-medium text-ink transition-[box-shadow,transform] duration-200 hover:-translate-y-px hover:shadow-[0_0_32px_rgba(255,255,255,0.25)]"
         >
           {cta}
-        </a>
+        </Link>
       </div>
     </div>
   );
@@ -309,13 +310,13 @@ function HeroBottom({ inverted = false }: { inverted?: boolean }) {
   const color = inverted ? "rgba(255,255,255,0.94)" : "var(--ink-muted)";
   return (
     <div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-5 pb-6">
-      <a
+      <Link
         href={hero.thirdPathHref}
-        className="pointer-events-auto border-b border-transparent text-sm transition-colors"
+        className="pointer-events-auto border-b border-transparent text-sm transition-colors hover:border-current"
         style={{ color }}
       >
         {hero.thirdPath}
-      </a>
+      </Link>
       <div className="flex flex-col items-center gap-2.5">
         <div
           className="relative h-8 w-px overflow-hidden"
@@ -363,12 +364,12 @@ function MobilePanel({
       <h2 className="font-display my-2.5 mb-4 text-2xl font-semibold leading-snug tracking-[-0.01em]">
         {headline}
       </h2>
-      <a
+      <Link
         href={href}
-        className={`inline-block rounded-full ${button} px-6 py-3 text-[0.9375rem] font-medium text-white`}
+        className={`inline-block rounded-full ${button} px-6 py-3 text-[0.9375rem] font-medium text-white transition-transform duration-200 hover:-translate-y-px`}
       >
         {cta}
-      </a>
+      </Link>
     </div>
   );
 }

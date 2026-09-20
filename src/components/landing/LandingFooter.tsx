@@ -1,4 +1,5 @@
 import { landingCopy } from "./copy";
+import { SmartLink } from "./SmartLink";
 import { BrandMark } from "./BrandMark";
 
 const { footer, nav } = landingCopy;
@@ -33,9 +34,9 @@ export function LandingFooter() {
             <div key={column.title} className="flex flex-col gap-2.5">
               <div className="text-xs uppercase tracking-[0.14em] text-ink-muted">{column.title}</div>
               {column.links.map((link) => (
-                <a key={link.label} href={link.href} className="text-[0.9375rem] hover:text-org">
+                <SmartLink key={link.label} href={link.href} className="text-[0.9375rem] transition-colors hover:text-org">
                   {link.label}
-                </a>
+                </SmartLink>
               ))}
             </div>
           ))}
@@ -49,9 +50,9 @@ export function LandingFooter() {
             </a>
             <span className="text-[0.9375rem] text-ink-muted">{footer.contact.city}</span>
             {footer.contact.social.map((link) => (
-              <a key={link.label} href={link.href} className="text-[0.9375rem] hover:text-org">
+              <SmartLink key={link.label} href={link.href} className="text-[0.9375rem] transition-colors hover:text-org">
                 {link.label}
-              </a>
+              </SmartLink>
             ))}
           </div>
         </div>

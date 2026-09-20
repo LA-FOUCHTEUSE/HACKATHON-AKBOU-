@@ -1,9 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
+import { useLocale } from "next-intl";
 import { Menu, X, ChevronDown } from "lucide-react";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import { type AppLocale } from "@/i18n/routing";
 import { landingCopy } from "./copy";
 import { BrandMark } from "./BrandMark";
+import { SmartLink } from "./SmartLink";
 
 const { nav } = landingCopy;
 
@@ -11,7 +15,20 @@ export function LandingNav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
-  const [lang, setLang] = useState<string>(nav.languages[0].label);
+
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
+  const [, startTransition] = useTransition();
+  const activeLabel =
+    nav.languages.find((item) => item.code === locale)?.label ?? nav.languages[0].label;
+
+  // Switching language re-renders the current page under the new locale prefix.
+  const switchLocale = (next: AppLocale) => {
+    setLangOpen(false);
+    setMenuOpen(false);
+    startTransition(() => router.replace(pathname, { locale: next }));
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -31,8 +48,8 @@ export function LandingNav() {
           borderBottom: `1px solid ${scrolled ? "var(--hairline)" : "transparent"}`,
         }}
       >
-        <a href="#top" className="flex items-center gap-2.5">
-          <BrandMark className="size-[26px]" />
+        <a href="#top" className="group/brand flex items-center gap-2.5">
+          <BrandMark className="size-[26px] transition-transform duration-300 group-hover/brand:scale-110" />
           <span className="font-wordmark text-[1.375rem] leading-none tracking-[0.14em] text-ink">
             {nav.wordmark}
           </span>
@@ -40,9 +57,14 @@ export function LandingNav() {
 
         <div className="hidden items-center gap-[clamp(20px,3vw,40px)] lg:flex">
           {nav.links.map((link) => (
-            <a key={link.href} href={link.href} className="text-[0.9375rem] text-ink hover:text-org">
+            <SmartLink
+              key={link.href}
+              href={link.href}
+              className="group/nav relative text-[0.9375rem] text-ink transition-colors hover:text-org"
+            >
               {link.label}
-            </a>
+              <span className="absolute -bottom-1 inset-x-0 h-px origin-center scale-x-0 bg-org transition-transform duration-300 group-hover/nav:scale-x-100" />
+            </SmartLink>
           ))}
         </div>
 
@@ -51,23 +73,30 @@ export function LandingNav() {
             <button
               type="button"
               onClick={() => setLangOpen((open) => !open)}
-              className="flex items-center gap-1.5 px-1 py-1.5 text-sm text-ink-muted"
+              className="flex items-center gap-1.5 px-1 py-1.5 text-sm text-ink-muted transition-colors hover:text-ink"
               aria-expanded={langOpen}
+              aria-haspopup="menu"
             >
-              <span>{lang}</span>
-              <ChevronDown className="size-3" />
+              <span>{activeLabel}</span>
+              <ChevronDown
+                className={`size-3 transition-transform duration-200 ${langOpen ? "rotate-180" : ""}`}
+              />
             </button>
             {langOpen ? (
-              <div className="tw-glass absolute start-0 top-9 z-95 min-w-[86px] overflow-hidden py-1">
+              <div
+                role="menu"
+                className="tw-glass absolute start-0 top-9 z-95 min-w-[86px] overflow-hidden py-1"
+              >
                 {nav.languages.map((item) => (
                   <button
                     key={item.code}
                     type="button"
-                    onClick={() => {
-                      setLang(item.label);
-                      setLangOpen(false);
-                    }}
-                    className="block w-full px-4 py-2 text-start text-sm hover:text-org"
+                    role="menuitem"
+                    onClick={() => switchLocale(item.code as AppLocale)}
+                    aria-current={item.code === locale || undefined}
+                    className={`block w-full px-4 py-2 text-start text-sm transition-colors hover:text-org ${
+                      item.code === locale ? "text-org" : ""
+                    }`}
                   >
                     {item.label}
                   </button>
@@ -76,12 +105,12 @@ export function LandingNav() {
             ) : null}
           </div>
 
-          <a
-            href="#top"
-            className="hidden shrink-0 whitespace-nowrap rounded-full border border-ink px-5 py-2.5 text-sm font-medium lg:inline-block"
+          <Link
+            href={nav.signInHref}
+            className="hidden shrink-0 whitespace-nowrap rounded-full border border-ink px-5 py-2.5 text-sm font-medium transition-colors duration-200 hover:bg-ink hover:text-canvas lg:inline-block"
           >
             {nav.signIn}
-          </a>
+          </Link>
 
           <button
             type="button"
@@ -105,21 +134,31 @@ export function LandingNav() {
             <X className="size-6" strokeWidth={1.6} />
           </button>
           {nav.links.map((link) => (
-            <a
+            <SmartLink
               key={link.href}
               href={link.href}
               onClick={() => setMenuOpen(false)}
-              className="font-display text-3xl font-semibold"
+              className="font-display text-3xl font-semibold transition-colors hover:text-org"
             >
               {link.label}
-            </a>
+            </SmartLink>
           ))}
-          <a href="#top" onClick={() => setMenuOpen(false)} className="font-display text-3xl font-semibold">
+          <Link
+            href={nav.signInHref}
+            onClick={() => setMenuOpen(false)}
+            className="font-display text-3xl font-semibold transition-colors hover:text-org"
+          >
             {nav.signIn}
-          </a>
+          </Link>
           <div className="mt-3 flex gap-4.5 text-[0.9375rem] text-ink-muted">
             {nav.languages.map((item) => (
-              <button key={item.code} type="button" onClick={() => setLang(item.label)}>
+              <button
+                key={item.code}
+                type="button"
+                onClick={() => switchLocale(item.code as AppLocale)}
+                aria-current={item.code === locale || undefined}
+                className={`transition-colors hover:text-org ${item.code === locale ? "text-org" : ""}`}
+              >
                 {item.label}
               </button>
             ))}

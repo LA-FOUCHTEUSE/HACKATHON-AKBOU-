@@ -1,4 +1,5 @@
 import { Check } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import { landingCopy } from "./copy";
 import { Reveal } from "./Reveal";
 
@@ -50,8 +51,8 @@ export function SponsorsSection() {
                 ))}
               </div>
 
-              <a
-                href="#entreprises"
+              <Link
+                href={sponsors.ctaHref}
                 className={`mt-auto rounded-full px-6 py-3 text-center text-[0.9375rem] font-medium transition-colors ${
                   pack.featured
                     ? "bg-org text-white hover:bg-org-deep"
@@ -59,7 +60,7 @@ export function SponsorsSection() {
                 }`}
               >
                 {sponsors.cta}
-              </a>
+              </Link>
             </div>
           ))}
         </div>

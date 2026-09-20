@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useSyncExternalStore } from "react";
 import Image from "next/image";
+import { Link } from "@/i18n/navigation";
 import { landingCopy } from "./copy";
 import { Reveal } from "./Reveal";
 
@@ -216,13 +217,13 @@ function CampaignCard({ item, decorative = false }: { item: Campaign; decorative
           <span className="text-sm text-ink-muted">
             {item.participants} {campaigns.participantsSuffix}
           </span>
-          <a
-            href="#campagnes"
+          <Link
+            href={campaigns.viewCampaignHref}
             className="text-sm text-org underline-offset-4 hover:underline"
             tabIndex={decorative ? -1 : undefined}
           >
             {campaigns.viewCampaign}
-          </a>
+          </Link>
         </div>
       </div>
     </article>
