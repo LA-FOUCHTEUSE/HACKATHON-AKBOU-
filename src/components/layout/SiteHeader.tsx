@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { logoutAction } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { BrandMark } from "@/components/landing/BrandMark";
 
 type NavItem = { href: string; key: string; badge?: number };
 
@@ -50,14 +51,17 @@ export async function SiteHeader() {
   }
 
   return (
-    <header className="border-b bg-card">
+    <header className="sticky top-0 z-50 border-b border-hairline bg-canvas/72 backdrop-blur-[14px]">
       <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
-        <Link href="/" className="text-lg font-bold tracking-tight text-primary">
-          {tApp("name")}
+        <Link href="/" className="flex items-center gap-2.5">
+          <BrandMark className="size-[22px]" />
+          <span className="font-wordmark text-[1.125rem] leading-none tracking-[0.14em] text-ink">
+            {tApp("name")}
+          </span>
         </Link>
         <nav className="flex flex-1 flex-wrap items-center gap-x-3 gap-y-1 text-sm">
           {items.map((item) => (
-            <Link key={item.href} href={item.href} className="inline-flex items-center gap-1 hover:text-primary">
+            <Link key={item.href} href={item.href} className="group/nav relative inline-flex items-center gap-1 py-1 transition-colors hover:text-org">
               {t(item.key)}
               {item.badge ? (
                 <span className="min-w-5 rounded-full bg-primary px-1.5 text-center text-xs font-semibold text-primary-foreground">
