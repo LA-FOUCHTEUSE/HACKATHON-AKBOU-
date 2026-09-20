@@ -11,7 +11,7 @@ export function SponsorsSection() {
         <h2 className="font-display m-0 mb-14 max-w-[22ch] text-[clamp(2rem,4vw,3.25rem)] font-semibold leading-[1.1] tracking-[-0.02em]">
           {sponsors.heading}
         </h2>
-        <div className="grid items-start gap-5 [grid-template-columns:repeat(auto-fit,minmax(272px,1fr))]">
+        <div className="grid items-stretch gap-5 [grid-template-columns:repeat(auto-fit,minmax(272px,1fr))]">
           {sponsors.packs.map((pack) => (
             <div
               key={pack.name}
@@ -20,7 +20,9 @@ export function SponsorsSection() {
               }`}
             >
               <div>
-                <div className="flex items-center gap-3">
+                {/* Fixed row height: the "most chosen" chip only exists on one card,
+                    so reserving its height keeps every price on the same baseline. */}
+                <div className="flex min-h-8 items-center gap-3">
                   <h3 className="font-display m-0 text-xl font-semibold">{pack.name}</h3>
                   {pack.featured ? (
                     <span className="rounded-full border border-org px-3 py-1 text-[0.6875rem] uppercase tracking-[0.12em] text-org">

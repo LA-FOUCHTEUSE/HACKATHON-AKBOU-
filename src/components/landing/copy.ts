@@ -128,6 +128,22 @@ export const landingCopy = {
         date: "Jeudi 15 octobre",
         participants: "112",
       },
+      {
+        domain: "Social et entraide",
+        title: "Distribution de repas en hiver",
+        organization: "Collectif Tafat",
+        city: "Tizi Ouzou",
+        date: "Chaque vendredi",
+        participants: "47",
+      },
+      {
+        domain: "Numérique",
+        title: "Initiation au code pour lycéennes",
+        organization: "Association Numidia Digital",
+        city: "Constantine",
+        date: "Samedi 24 octobre",
+        participants: "35",
+      },
     ],
   },
 

@@ -65,7 +65,7 @@ export function HandsIllustration({ side }: { side: HeroSide }) {
         className="absolute top-[34%] w-[min(54%,780px)] origin-[right_center]"
         style={{
           right: 0,
-          ...handStyle({ hovered: side === "organization", anyHovered }, "rgba(11, 107, 58, 0.42)", -11),
+          ...handStyle({ hovered: side === "organization", anyHovered }, "rgba(11, 107, 58, 0.42)", -7),
         }}
       >
         <Image

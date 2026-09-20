@@ -179,3 +179,29 @@
     background: rgb(255 255 255 / 0.9);
   }
 }
+
+/* Campaign wall: each column loops its duplicated card list upward on its own
+   timer. Different durations per column create the parallax depth. */
+@keyframes tw-wall {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
+
+[data-wall-track] {
+  /* The trailing gap makes the duplicated half exactly half the track height,
+     so translateY(-50%) lands on the matching card with no seam. */
+  padding-block-end: var(--wall-gap);
+  animation: tw-wall var(--wall-duration, 48s) linear infinite;
+  will-change: transform;
+}
+
+/* "Voir la campagne" is a real link, so the column holds still while pointed at. */
+[data-wall-column]:hover [data-wall-track] {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-wall-track] {
+    animation: none !important;
+  }
+}
