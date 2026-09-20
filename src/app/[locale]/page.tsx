@@ -7,7 +7,8 @@ import { CampaignsSection } from "@/components/landing/CampaignsSection";
 import { SponsorsSection } from "@/components/landing/SponsorsSection";
 import { LandingFooter } from "@/components/landing/LandingFooter";
 
-export const dynamic = "force-dynamic";
+// Static content, no cookie, no database read: cached and served from the edge
+// instead of re-rendered on the server for every visit.
 
 export default function LandingPage() {
   return (

@@ -7,8 +7,17 @@ import { formats, TIME_ZONE } from "@/i18n/request";
 import { fontVariables } from "@/fonts";
 import "../globals.css";
 
-// Every page reads the session cookie and/or the database: never prerender at build time.
-export const dynamic = "force-dynamic";
+// The layout itself reads no cookie and no database row, so it can be served from
+// cache. Pages that read the session (everything under the (app) route group) set
+// their own `dynamic = "force-dynamic"` — this used to force that on the landing
+// page too, which has no user-specific data and paid for a database round trip
+// it never needed.
+
+// Without this, Next treats `[locale]` as an open-ended dynamic segment and never
+// prerenders it, even for pages under it with no per-request data.
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;

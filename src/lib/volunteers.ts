@@ -47,6 +47,12 @@ export async function getVolunteerProfileStats(profile: VolunteerProfile) {
   });
   const titleOf = new Map(ledgerCampaigns.map((c) => [c.id, c.title]));
 
+  // Neither list depends on the other, so both round trips happen together.
+  const [upcoming, favoriteCampaigns] = await Promise.all([
+    getCampaignsByIds(upcomingEnrollments.map((e) => e.campaignId), profile.id),
+    getCampaignsByIds(favorites.map((f) => f.campaignId), profile.id),
+  ]);
+
   return {
     rank,
     totalVolunteers: total,
@@ -56,8 +62,8 @@ export async function getVolunteerProfileStats(profile: VolunteerProfile) {
       return { ...h, campaignTitle: campaignId ? (titleOf.get(campaignId) ?? null) : null };
     }),
     attended: checkIns,
-    upcoming: await getCampaignsByIds(upcomingEnrollments.map((e) => e.campaignId), profile.id),
-    favorites: await getCampaignsByIds(favorites.map((f) => f.campaignId), profile.id),
+    upcoming,
+    favorites: favoriteCampaigns,
   };
 }
 

@@ -9,8 +9,13 @@ export const dynamic = "force-dynamic";
 
 export default async function LeaderboardPage() {
   const t = await getTranslations();
-  const user = await getCurrentUser();
-  const [rows, total] = await Promise.all([getLeaderboard(), prisma.volunteerProfile.count()]);
+  // Independent round trips run together: each one pays the network latency to
+  // the database once, instead of the page paying it three times in a row.
+  const [user, rows, total] = await Promise.all([
+    getCurrentUser(),
+    getLeaderboard(),
+    prisma.volunteerProfile.count(),
+  ]);
   const me = user?.role === "VOLUNTEER" ? user.volunteer : null;
   const myRank = me ? await getNationalRank(me) : null;
 
