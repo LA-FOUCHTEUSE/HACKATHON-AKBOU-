@@ -1,18 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Noto_Sans, Noto_Sans_Arabic } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { routing, directionFor } from "@/i18n/routing";
 import { formats, TIME_ZONE } from "@/i18n/request";
-import { SiteHeader } from "@/components/layout/SiteHeader";
+import { fontVariables } from "@/fonts";
 import "../globals.css";
 
 // Every page reads the session cookie and/or the database: never prerender at build time.
 export const dynamic = "force-dynamic";
-
-const latin = Noto_Sans({ subsets: ["latin"], variable: "--font-latin", display: "swap" });
-const arabic = Noto_Sans_Arabic({ subsets: ["arabic"], variable: "--font-arabic", display: "swap" });
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -32,11 +28,8 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} dir={directionFor(locale)}>
-      <body className={`${latin.variable} ${arabic.variable} min-h-dvh font-sans`}>
-        <NextIntlClientProvider timeZone={TIME_ZONE} formats={formats}>
-          <SiteHeader />
-          <main className="mx-auto w-full max-w-5xl px-4 py-6">{children}</main>
-        </NextIntlClientProvider>
+      <body className={`${fontVariables} min-h-dvh font-sans`}>
+        <NextIntlClientProvider timeZone={TIME_ZONE} formats={formats}>{children}</NextIntlClientProvider>
       </body>
     </html>
   );
