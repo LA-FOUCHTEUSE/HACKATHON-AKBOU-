@@ -20,30 +20,40 @@ const MOTIFS: string[][] = [
 const WAVE_AMPLITUDE = 17;
 const WAVE_LENGTH = 720;
 const WAVE_WIDTH = 5760;
+const WAVE_OFFSET = -29;
+
+/** Same sinusoid the drifting wave line traces, so the motifs ride along it. */
+function waveY(x: number, offset: number): number {
+  return BAND_HEIGHT / 2 + offset + WAVE_AMPLITUDE * Math.sin((x / WAVE_LENGTH) * 2 * Math.PI);
+}
 
 function wavePath(offset: number): string {
-  const mid = BAND_HEIGHT / 2;
   let d = "";
   for (let x = 0; x <= WAVE_WIDTH; x += 24) {
-    const y = mid + offset + WAVE_AMPLITUDE * Math.sin((x / WAVE_LENGTH) * 2 * Math.PI);
+    const y = waveY(x, offset);
     d += `${x ? " L" : "M"}${x},${y.toFixed(1)}`;
   }
   return d;
 }
 
 const WAVES = [
-  { d: wavePath(-29), duration: "33s", delay: "0s" },
-  { d: wavePath(29), duration: "27s", delay: "-9s" },
+  { d: wavePath(WAVE_OFFSET), duration: "33s", delay: "0s" },
+  { d: wavePath(-WAVE_OFFSET), duration: "27s", delay: "-9s" },
 ];
 
 // Three copies of the row: the marquee shifts by exactly one row width, so the
-// seam always lands on an identical cell.
-const CELLS = Array.from({ length: MOTIF_COUNT * 3 }, (_, i) => i);
+// seam always lands on an identical cell. Each motif's vertical position is
+// sampled from the wave path at its resting x, so it rides the same curve the
+// drifting line traces instead of running straight through the band.
+const CELLS = Array.from({ length: MOTIF_COUNT * 3 }, (_, i) => {
+  const x = i * CELL_WIDTH + CELL_WIDTH / 2;
+  return { index: i, y: waveY(x, WAVE_OFFSET) };
+});
 
 export function MotifBand() {
   return (
     <div
-      className="pointer-events-none absolute inset-x-0 top-10 z-30 overflow-hidden"
+      className="pointer-events-none absolute inset-x-0 top-10 z-5 overflow-hidden"
       style={{
         height: BAND_HEIGHT,
         maskImage:
@@ -101,18 +111,18 @@ export function MotifBand() {
 
       <div
         data-marquee=""
-        className="absolute top-0 start-0 flex w-max opacity-30"
-        style={{ animation: "tw-marquee 60s linear infinite" }}
+        className="absolute start-0 flex w-max opacity-30"
+        style={{ top: 0, animation: "tw-marquee 60s linear infinite" }}
         aria-hidden="true"
       >
         {CELLS.map((cell) => {
-          const motif = cell % MOTIF_COUNT;
+          const motif = cell.index % MOTIF_COUNT;
           const phase = (motif + 1) / MOTIF_COUNT;
           return (
             <div
-              key={cell}
+              key={cell.index}
               data-bob=""
-              className="flex flex-none items-center justify-center"
+              className="relative flex flex-none items-center justify-center"
               style={{
                 width: CELL_WIDTH,
                 height: BAND_HEIGHT,
@@ -120,7 +130,13 @@ export function MotifBand() {
                 animationDelay: `${(-30 * (1 - phase)).toFixed(2)}s`,
               }}
             >
-              <svg width="40" height="40" viewBox="0 0 48 48">
+              <svg
+                width="40"
+                height="40"
+                viewBox="0 0 48 48"
+                className="absolute"
+                style={{ top: cell.y - 20 }}
+              >
                 <use href={`#tw-motif-${motif}`} />
               </svg>
             </div>

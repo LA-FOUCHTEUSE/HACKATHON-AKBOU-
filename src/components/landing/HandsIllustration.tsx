@@ -57,12 +57,15 @@ export function HandsIllustration({ side }: { side: HeroSide }) {
         />
       </div>
 
-      {/* Organization (green) enters from the far right, also direction-independent. */}
+      {/* Organization (green) enters from the far right, also direction-independent.
+          It rests higher than the volunteer hand so the hover rotation — negative,
+          because the pivot sits off-screen to the right — swings the hand down into
+          the meeting point instead of just tilting in place. */}
       <div
-        className="absolute top-[44%] w-[min(54%,780px)] origin-[right_center]"
+        className="absolute top-[34%] w-[min(54%,780px)] origin-[right_center]"
         style={{
           right: 0,
-          ...handStyle({ hovered: side === "organization", anyHovered }, "rgba(11, 107, 58, 0.42)", 5),
+          ...handStyle({ hovered: side === "organization", anyHovered }, "rgba(11, 107, 58, 0.42)", -11),
         }}
       >
         <Image
