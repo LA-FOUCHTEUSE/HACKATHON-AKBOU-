@@ -35,7 +35,7 @@ export default async function SponsorCheckoutPage({ params }: { params: Promise<
     <div className="mx-auto max-w-3xl space-y-6">
       <header className="space-y-2">
         <p className="text-sm text-muted-foreground">{t("checkoutTitle")}</p>
-        <h1 className="text-2xl font-bold">{campaign.title}</h1>
+        <h1 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-semibold leading-tight tracking-[-0.02em]">{campaign.title}</h1>
         <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
           <DomainBadge domain={campaign.domain} />
           <span>{campaign.orgName}</span>
@@ -44,7 +44,7 @@ export default async function SponsorCheckoutPage({ params }: { params: Promise<
         <FundingProgress raised={campaign.raised} goal={campaign.fundingGoal} />
       </header>
 
-      <div className="grid gap-3 md:grid-cols-3">
+      <div data-stagger="" className="grid gap-4 md:grid-cols-3">
         {packs.map((pack) => (
           <PackCard key={pack.tier} pack={pack} />
         ))}

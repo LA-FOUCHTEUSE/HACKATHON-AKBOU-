@@ -133,7 +133,7 @@ export function QrScanner() {
           )}
         </div>
         {cameraError ? (
-          <p className="rounded-md bg-amber-100 px-3 py-2 text-center text-sm text-amber-900">{t("scanner.cameraError")}</p>
+          <p className="tw-notice px-4 py-3 text-center text-sm">{t("scanner.cameraError")}</p>
         ) : null}
       </section>
 
@@ -172,7 +172,7 @@ export function QrScanner() {
                   <p className="font-medium">{t("scanner.rankUp", { tier: t(result.data.tierKey) })}</p>
                 ) : null}
                 {result.data.wasWaitlisted ? (
-                  <p className="text-xs text-amber-800">{t("scanner.wasWaitlisted")}</p>
+                  <p className="text-xs text-ochre">{t("scanner.wasWaitlisted")}</p>
                 ) : null}
               </>
             ) : (

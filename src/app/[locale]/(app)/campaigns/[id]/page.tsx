@@ -33,7 +33,7 @@ export default async function CampaignDetailPage({ params }: { params: Promise<{
           <span className="rounded-full bg-muted px-2 py-0.5 text-xs">{t(`status.campaign.${c.status}`)}</span>
         </div>
         <div className="flex items-start justify-between gap-3">
-          <h1 className="text-2xl font-bold">{c.title}</h1>
+          <h1 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-semibold leading-tight tracking-[-0.02em]">{c.title}</h1>
           {volunteerId ? <FavoriteButton campaignId={c.id} isFavorite={c.isFavorite} /> : null}
         </div>
         <p className="inline-flex items-center gap-1 text-muted-foreground">
@@ -84,7 +84,7 @@ export default async function CampaignDetailPage({ params }: { params: Promise<{
 
       {c.needsFunding || c.sponsorRequested ? (
         <section className="space-y-4 rounded-lg border p-4">
-          <h2 className="text-lg font-semibold">{t("donation.fundingTitle")}</h2>
+          <h2 className="font-display text-lg font-semibold">{t("donation.fundingTitle")}</h2>
           <FundingProgress raised={c.raised} goal={c.fundingGoal} />
           {!open ? (
             <p className="text-sm text-muted-foreground">{t("donation.closed")}</p>

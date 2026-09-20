@@ -38,19 +38,23 @@ export async function InboxList({ userId }: { userId: string }) {
         {unread > 0 ? <MarkAllReadButton label={t("inbox.markAll")} /> : null}
       </div>
       {notifications.length === 0 ? (
-        <p className="text-muted-foreground">{t("inbox.empty")}</p>
+        <p className="tw-glass px-5 py-8 text-center text-ink-muted">{t("inbox.empty")}</p>
       ) : (
-        <ul className="space-y-2">
+        <ul data-stagger="" className="space-y-2.5">
           {notifications.map((n) => {
             const params = resolve(n.params as Params | null);
             return (
               <li
                 key={n.id}
-                className={cn("rounded-lg border p-3", n.read ? "bg-card" : "border-primary/40 bg-primary/5")}
+                data-row=""
+                className={cn(
+                  "tw-glass px-5 py-4",
+                  !n.read && "border-s-[3px] border-s-org",
+                )}
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="space-y-1">
-                    <p className="flex items-center gap-2 font-medium">
+                    <p className="m-0 flex items-center gap-2 font-display font-semibold">
                       {!n.read ? <span className="size-2 shrink-0 rounded-full bg-primary" aria-hidden /> : null}
                       {t(n.titleKey, params)}
                     </p>
@@ -60,7 +64,10 @@ export async function InboxList({ userId }: { userId: string }) {
                       {n.campaignId ? (
                         <>
                           {" - "}
-                          <Link href={`/campaigns/${n.campaignId}`} className="underline">
+                          <Link
+                          href={`/campaigns/${n.campaignId}`}
+                          className="text-org underline-offset-4 hover:underline"
+                        >
                             {t("inbox.openCampaign")}
                           </Link>
                         </>

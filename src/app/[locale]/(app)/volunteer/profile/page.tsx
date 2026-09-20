@@ -6,6 +6,7 @@ import { getVolunteerProfileStats } from "@/lib/volunteers";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TierProgress } from "@/components/volunteer/TierProgress";
+import { PageHeader } from "@/components/layout/PageHeader";
 import { DomainBadge } from "@/components/campaigns/DomainBadge";
 
 export const dynamic = "force-dynamic";
@@ -25,17 +26,16 @@ export default async function VolunteerProfilePage() {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-1">
-        <h1 className="text-2xl font-bold">{profile.fullName}</h1>
-        {profile.city ? <p className="text-muted-foreground">{profile.city}</p> : null}
-      </div>
+      <PageHeader title={profile.fullName} subtitle={profile.city ?? undefined} />
 
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div data-stagger="" className="grid grid-cols-2 gap-4 md:grid-cols-4">
         {tiles.map((tile) => (
-          <Card key={tile.label} className="gap-1 py-4">
-            <CardContent className="px-4">
-              <p className="text-xs text-muted-foreground">{tile.label}</p>
-              <p className="text-xl font-bold">{tile.value}</p>
+          <Card key={tile.label} className="gap-1 py-5">
+            <CardContent className="px-5">
+              <p className="m-0 text-xs uppercase tracking-[0.12em] text-ink-muted">{tile.label}</p>
+              <p className="font-display m-0 mt-1.5 text-[1.75rem] leading-none tracking-[-0.02em] text-ochre">
+                {tile.value}
+              </p>
             </CardContent>
           </Card>
         ))}
@@ -44,15 +44,22 @@ export default async function VolunteerProfilePage() {
       <TierProgress progress={stats.progress} />
 
       <section className="space-y-3">
-        <h2 className="text-lg font-semibold">{t("profile.upcoming")}</h2>
+        <h2 className="font-display m-0 text-lg font-semibold">{t("profile.upcoming")}</h2>
         {stats.upcoming.length === 0 ? (
           <p className="text-sm text-muted-foreground">{t("profile.noUpcoming")}</p>
         ) : (
-          <ul className="space-y-2">
+          <ul data-stagger="" className="space-y-2.5">
             {stats.upcoming.map((c) => (
-              <li key={c.id} className="flex flex-wrap items-center justify-between gap-2 rounded-lg border p-3">
+              <li
+                key={c.id}
+                data-row=""
+                className="tw-glass flex flex-wrap items-center justify-between gap-3 px-5 py-4"
+              >
                 <div className="space-y-1">
-                  <Link href={`/campaigns/${c.id}`} className="font-medium hover:text-primary">
+                  <Link
+                    href={`/campaigns/${c.id}`}
+                    className="font-display font-semibold transition-colors hover:text-org"
+                  >
                     {c.title}
                   </Link>
                   <p className="text-xs text-muted-foreground">

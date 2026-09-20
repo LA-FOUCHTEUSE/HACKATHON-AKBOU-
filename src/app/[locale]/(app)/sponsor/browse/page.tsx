@@ -24,13 +24,13 @@ export default async function SponsorBrowsePage() {
   return (
     <div className="space-y-8">
       <div className="space-y-1">
-        <h1 className="text-2xl font-bold">{t("browseTitle")}</h1>
+        <h1 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-semibold leading-tight tracking-[-0.02em]">{t("browseTitle")}</h1>
         <p className="text-sm text-muted-foreground">{t("browseSubtitle")}</p>
       </div>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-semibold">{t("packsTitle")}</h2>
-        <div className="grid gap-4 md:grid-cols-3">
+        <h2 className="font-display text-lg font-semibold">{t("packsTitle")}</h2>
+        <div data-stagger="" className="grid gap-4 md:grid-cols-3">
           {packs.map((pack) => (
             <PackCard key={pack.tier} pack={pack} />
           ))}
@@ -41,7 +41,7 @@ export default async function SponsorBrowsePage() {
         {campaigns.length === 0 ? (
           <p className="text-muted-foreground">{t("noCampaigns")}</p>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div data-stagger="" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {campaigns.map((c) => (
               <CampaignCard
                 key={c.id}

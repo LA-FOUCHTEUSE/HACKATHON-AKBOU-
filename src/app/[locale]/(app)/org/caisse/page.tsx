@@ -16,7 +16,7 @@ export default async function OrgCaissePage() {
   return (
     <div className="space-y-6">
       <div className="space-y-1">
-        <h1 className="text-2xl font-bold">{t("caisse.title")}</h1>
+        <h1 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-semibold leading-tight tracking-[-0.02em]">{t("caisse.title")}</h1>
         <p className="text-sm text-muted-foreground">{t("caisse.subtitle")}</p>
       </div>
 

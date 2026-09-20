@@ -16,7 +16,7 @@ export default async function EditCampaignPage({ params }: { params: Promise<{ i
 
   return (
     <div className="mx-auto max-w-2xl space-y-4">
-      <h1 className="text-2xl font-bold">{t("editTitle")}</h1>
+      <h1 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-semibold leading-tight tracking-[-0.02em]">{t("editTitle")}</h1>
       <CampaignForm
         campaignId={c.id}
         defaults={{

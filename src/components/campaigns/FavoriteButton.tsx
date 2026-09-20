@@ -29,7 +29,7 @@ export function FavoriteButton({ campaignId, isFavorite }: { campaignId: string;
         })
       }
     >
-      <Heart className={cn("size-5", optimistic ? "fill-rose-600 text-rose-600" : "text-muted-foreground")} />
+      <Heart className={cn("size-5", optimistic ? "fill-rose-600 text-volunteer" : "text-muted-foreground")} />
     </Button>
   );
 }

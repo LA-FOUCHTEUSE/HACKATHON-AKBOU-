@@ -38,7 +38,7 @@ export default async function CheckInPage({ params }: { params: Promise<{ campai
   return (
     <div className="mx-auto max-w-md space-y-5 text-center">
       <div className="space-y-1">
-        <h1 className="text-2xl font-bold">{t("checkin.title")}</h1>
+        <h1 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-semibold leading-tight tracking-[-0.02em]">{t("checkin.title")}</h1>
         <p className="font-medium">{campaign.title}</p>
       </div>
 
@@ -60,7 +60,7 @@ export default async function CheckInPage({ params }: { params: Promise<{ campai
         <>
           <p className="text-sm text-muted-foreground">{t("checkin.instructions")}</p>
           {enrollment.status === "WAITLISTED" ? (
-            <p className="rounded-md bg-amber-100 px-3 py-2 text-sm text-amber-900">{t("checkin.waitlistNotice")}</p>
+            <p className="tw-notice px-4 py-3 text-sm">{t("checkin.waitlistNotice")}</p>
           ) : null}
           <CheckInQr campaignId={campaign.id} />
         </>

@@ -223,3 +223,96 @@
     opacity: 1 !important;
   }
 }
+
+/* Staggered entrance for a grid or list: children rise in one after another.
+   Pure CSS, so it costs nothing at runtime and needs no observer. */
+@keyframes tw-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+[data-stagger] > * {
+  animation: tw-rise 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+[data-stagger] > *:nth-child(1) { animation-delay: 0ms; }
+[data-stagger] > *:nth-child(2) { animation-delay: 45ms; }
+[data-stagger] > *:nth-child(3) { animation-delay: 90ms; }
+[data-stagger] > *:nth-child(4) { animation-delay: 135ms; }
+[data-stagger] > *:nth-child(5) { animation-delay: 180ms; }
+[data-stagger] > *:nth-child(6) { animation-delay: 225ms; }
+[data-stagger] > *:nth-child(7) { animation-delay: 270ms; }
+[data-stagger] > *:nth-child(8) { animation-delay: 315ms; }
+/* Past the ninth item the reader has scrolled anyway: land them together. */
+[data-stagger] > *:nth-child(n + 9) { animation-delay: 360ms; }
+
+/* Rows in a list highlight on hover without shifting their neighbours. */
+[data-row] {
+  transition:
+    background-color 200ms ease,
+    transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+[data-row]:hover {
+  background-color: color-mix(in srgb, var(--org) 5%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-stagger] > * {
+    animation: none;
+  }
+  [data-row] {
+    transition: none;
+  }
+}
+
+/* Status pills. Green confirms, ochre waits, red warns, neutral is inactive —
+   the same three signals the rest of the product already uses. */
+.tw-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.tw-pill-ok {
+  border-color: color-mix(in srgb, var(--org) 38%, transparent);
+  background: color-mix(in srgb, var(--org) 10%, transparent);
+  color: var(--org);
+}
+.tw-pill-wait {
+  border-color: color-mix(in srgb, var(--ochre) 42%, transparent);
+  background: color-mix(in srgb, var(--ochre) 12%, transparent);
+  color: var(--ochre);
+}
+.tw-pill-alert {
+  border-color: color-mix(in srgb, var(--volunteer) 36%, transparent);
+  background: color-mix(in srgb, var(--volunteer) 9%, transparent);
+  color: var(--volunteer);
+}
+.tw-pill-info {
+  border-color: var(--hairline);
+  background: color-mix(in srgb, var(--ink) 4%, transparent);
+  color: var(--ink);
+}
+.tw-pill-muted {
+  border-color: var(--hairline);
+  color: var(--ink-muted);
+}
+
+/* Inline notice block, for a message that needs attention but is not an error. */
+.tw-notice {
+  border-radius: 0.875rem;
+  border: 1px solid color-mix(in srgb, var(--ochre) 34%, transparent);
+  background: color-mix(in srgb, var(--ochre) 9%, transparent);
+  color: color-mix(in srgb, var(--ochre) 72%, var(--ink));
+}

@@ -35,7 +35,7 @@ export default async function LoginPage() {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <h1 className="text-2xl font-bold">{t("title")}</h1>
+        <h1 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-semibold leading-tight tracking-[-0.02em]">{t("title")}</h1>
         <p className="text-muted-foreground">{t("subtitle")}</p>
         <div className="flex flex-wrap gap-3 pt-2">
           <Button asChild variant="secondary" size="sm">
@@ -47,7 +47,7 @@ export default async function LoginPage() {
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div data-stagger="" className="grid gap-5 md:grid-cols-3">
         {GROUPS.map((group) => (
           <Card key={group.role} className="gap-3 py-4">
             <CardHeader className="px-4">

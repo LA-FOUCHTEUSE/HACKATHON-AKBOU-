@@ -21,20 +21,24 @@ export function CampaignCard({ campaign: c, volunteerControls = false, footer }:
   const format = useFormatter();
 
   return (
-    <Card className="flex flex-col gap-3 py-4">
+    <Card className="group/campaign flex flex-col gap-3 py-4 transition-transform duration-300 hover:-translate-y-0.5">
       <CardHeader className="gap-2 px-4">
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
             <DomainBadge domain={c.domain} />
             {c.status === "ONGOING" ? (
-              <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-ochre/40 bg-ochre/10 px-3 py-1 text-[0.6875rem] uppercase tracking-[0.1em] text-ochre">
+                <span className="size-1.5 rounded-full bg-ochre" />
                 {t("campaigns.ongoing")}
               </span>
             ) : null}
           </div>
           {volunteerControls ? <FavoriteButton campaignId={c.id} isFavorite={c.isFavorite} /> : null}
         </div>
-        <Link href={`/campaigns/${c.id}`} className="text-base leading-snug font-semibold hover:text-primary">
+        <Link
+          href={`/campaigns/${c.id}`}
+          className="font-display text-base font-semibold leading-snug transition-colors group-hover/campaign:text-org"
+        >
           {c.title}
         </Link>
         <p className="inline-flex items-center gap-1 text-sm text-muted-foreground">
@@ -44,17 +48,17 @@ export function CampaignCard({ campaign: c, volunteerControls = false, footer }:
       </CardHeader>
       <CardContent className="flex-1 space-y-2 px-4 text-sm">
         <p className="inline-flex items-center gap-2">
-          <CalendarDays className="size-4 shrink-0 text-muted-foreground" />
+          <CalendarDays className="size-4 shrink-0 text-ink-muted transition-colors group-hover/campaign:text-org" />
           {format.dateTime(c.startAt, "long")}
         </p>
         {c.city ? (
           <p className="flex items-center gap-2">
-            <MapPin className="size-4 shrink-0 text-muted-foreground" />
+            <MapPin className="size-4 shrink-0 text-ink-muted transition-colors group-hover/campaign:text-org" />
             {c.city}
           </p>
         ) : null}
         <p className="flex items-center gap-2">
-          <Users className="size-4 shrink-0 text-muted-foreground" />
+          <Users className="size-4 shrink-0 text-ink-muted transition-colors group-hover/campaign:text-org" />
           {c.remaining === null ? t("common.unlimited") : t("common.seatsLeft", { count: c.remaining })}
           <span className="text-muted-foreground">
             {" - "}

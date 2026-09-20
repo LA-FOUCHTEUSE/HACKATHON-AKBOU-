@@ -12,11 +12,11 @@ import { cn } from "@/lib/utils";
 export const dynamic = "force-dynamic";
 
 const STATUS_STYLE: Record<string, string> = {
-  ENROLLED: "bg-sky-100 text-sky-900",
-  WAITLISTED: "bg-amber-100 text-amber-900",
-  ATTENDED: "bg-emerald-100 text-emerald-900",
-  WITHDRAWN: "bg-muted text-muted-foreground",
-  NO_SHOW: "bg-rose-100 text-rose-900",
+  ENROLLED: "tw-pill tw-pill-info",
+  WAITLISTED: "tw-pill tw-pill-wait",
+  ATTENDED: "tw-pill tw-pill-ok",
+  WITHDRAWN: "tw-pill tw-pill-muted",
+  NO_SHOW: "tw-pill tw-pill-alert",
 };
 
 export default async function ParticipantsPage({ params }: { params: Promise<{ id: string }> }) {
@@ -33,7 +33,7 @@ export default async function ParticipantsPage({ params }: { params: Promise<{ i
     <div className="space-y-5">
       <div className="space-y-1">
         <p className="text-sm text-muted-foreground">{t("participants.title")}</p>
-        <h1 className="text-2xl font-bold">{campaign.title}</h1>
+        <h1 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-semibold leading-tight tracking-[-0.02em]">{campaign.title}</h1>
         <p className="text-sm text-muted-foreground">
           {t(`status.campaign.${campaign.status}`)} - {format.dateTime(campaign.startAt, "long")} -{" "}
           {t("common.points", { count: campaign.pointsValue })}

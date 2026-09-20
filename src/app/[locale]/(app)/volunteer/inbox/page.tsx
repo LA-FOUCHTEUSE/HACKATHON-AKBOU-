@@ -9,7 +9,7 @@ export default async function VolunteerInboxPage() {
   const t = await getTranslations("inbox");
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">{t("title")}</h1>
+      <h1 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-semibold leading-tight tracking-[-0.02em]">{t("title")}</h1>
       <InboxList userId={user.id} />
     </div>
   );

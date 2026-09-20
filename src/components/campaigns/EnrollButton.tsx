@@ -32,7 +32,7 @@ export function EnrollButton({ campaignId, status, canEnroll, closed = false }: 
   }
 
   if (optimistic === "ATTENDED") {
-    return <span className="text-sm font-medium text-primary">{t("campaigns.attended")}</span>;
+    return <span className="tw-pill tw-pill-ok">{t("campaigns.attended")}</span>;
   }
 
   const isIn = optimistic === "ENROLLED" || optimistic === "WAITLISTED";
@@ -65,7 +65,7 @@ export function EnrollButton({ campaignId, status, canEnroll, closed = false }: 
               key={optimistic}
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary"
+              className={`tw-pill ${optimistic === "WAITLISTED" ? "tw-pill-wait" : "tw-pill-ok"}`}
             >
               {optimistic === "WAITLISTED" ? t("campaigns.waitlisted") : t("campaigns.enrolled")}
             </motion.span>

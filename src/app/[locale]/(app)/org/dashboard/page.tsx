@@ -30,7 +30,7 @@ export default async function OrgDashboardPage() {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <h1 className="inline-flex items-center gap-2 text-2xl font-bold">
+        <h1 className="font-display m-0 inline-flex items-center gap-2.5 text-[clamp(1.5rem,3vw,2.25rem)] font-semibold leading-tight tracking-[-0.02em]">
           {profile.name}
           {profile.verified ? <BadgeCheck className="size-5 text-primary" aria-label={t("common.verified")} /> : null}
         </h1>
@@ -56,12 +56,14 @@ export default async function OrgDashboardPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-3">
+      <div data-stagger="" className="grid grid-cols-3 gap-4">
         {tiles.map((tile) => (
-          <Card key={tile.label} className="gap-1 py-4">
-            <CardContent className="px-4">
-              <p className="text-xs text-muted-foreground">{tile.label}</p>
-              <p className="text-lg font-bold sm:text-xl">{tile.value}</p>
+          <Card key={tile.label} className="gap-1 py-5">
+            <CardContent className="px-5">
+              <p className="m-0 text-xs uppercase tracking-[0.12em] text-ink-muted">{tile.label}</p>
+              <p className="font-display m-0 mt-1.5 text-[clamp(1.25rem,2.4vw,1.75rem)] leading-none tracking-[-0.02em] text-ochre">
+                {tile.value}
+              </p>
             </CardContent>
           </Card>
         ))}
@@ -69,13 +71,13 @@ export default async function OrgDashboardPage() {
 
       {sections.map((section) => (
         <section key={section.key} className="space-y-3">
-          <h2 className="text-lg font-semibold">
+          <h2 className="font-display text-lg font-semibold">
             {t(`org.${section.key}`)} <span className="text-muted-foreground">({section.items.length})</span>
           </h2>
           {section.items.length === 0 ? (
-            <p className="text-sm text-muted-foreground">{t("org.noCampaigns")}</p>
+            <p className="tw-glass m-0 px-5 py-6 text-center text-sm text-ink-muted">{t("org.noCampaigns")}</p>
           ) : (
-            <ul className="grid gap-3 md:grid-cols-2">
+            <ul data-stagger="" className="grid gap-4 md:grid-cols-2">
               {section.items.map((c) => (
                 <OrgCampaignRow key={c.id} c={c} />
               ))}

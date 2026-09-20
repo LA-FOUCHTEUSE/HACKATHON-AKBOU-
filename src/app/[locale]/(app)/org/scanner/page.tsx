@@ -11,7 +11,7 @@ export default async function ScannerPage() {
   return (
     <div className="mx-auto max-w-lg space-y-4">
       <div className="space-y-1">
-        <h1 className="text-2xl font-bold">{t("title")}</h1>
+        <h1 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-semibold leading-tight tracking-[-0.02em]">{t("title")}</h1>
         <p className="text-sm text-muted-foreground">{t("instructions")}</p>
       </div>
       <QrScanner />

@@ -24,12 +24,17 @@ export function OrgCampaignRow({ c, manage = false }: { c: OrgCampaignRowData; m
   const cancellable = c.status !== "CANCELLED" && c.status !== "COMPLETED";
 
   return (
-    <li className="space-y-2 rounded-lg border p-3">
+    <li data-row="" className="tw-glass group/row space-y-2.5 px-5 py-4">
       <div className="flex flex-wrap items-center gap-2">
         <DomainBadge domain={c.domain} />
-        <span className="rounded-full bg-muted px-2 py-0.5 text-xs">{t(`status.campaign.${c.status}`)}</span>
+        <span className={`tw-pill ${c.status === "PUBLISHED" ? "tw-pill-ok" : "tw-pill-muted"}`}>
+          {t(`status.campaign.${c.status}`)}
+        </span>
       </div>
-      <Link href={`/campaigns/${c.id}`} className="block font-medium hover:text-primary">
+      <Link
+        href={`/campaigns/${c.id}`}
+        className="font-display block font-semibold transition-colors group-hover/row:text-org"
+      >
         {c.title}
       </Link>
       <p className="text-xs text-muted-foreground">
