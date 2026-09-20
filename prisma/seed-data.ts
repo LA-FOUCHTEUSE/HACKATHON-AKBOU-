@@ -4,12 +4,12 @@ import type { ActivityDomain, CampaignStatus, EnrollmentStatus, SponsorTier } fr
 // Visible content is French (default demo language). No emoji anywhere.
 
 export const DEMO_EMAILS = {
-  volunteer: "benevole.demo@tawa3.dz",
-  organization: "org.demo@tawa3.dz",
-  sponsor: "sponsor.demo@tawa3.dz",
+  volunteer: "benevole.demo@tiwizi.dz",
+  organization: "org.demo@tiwizi.dz",
+  sponsor: "sponsor.demo@tiwizi.dz",
 } as const;
 
-export const DEMO_CHECKIN_TOKEN = "TAWA3-DEMO-7K2Q9XHM";
+export const DEMO_CHECKIN_TOKEN = "TIWIZI-DEMO-7K2Q9XHM";
 
 export const PACKS: Array<{ tier: SponsorTier; priceDZD: number; benefitKeys: string[] }> = [
   {
@@ -66,7 +66,7 @@ export const ORGANIZATIONS: Record<
       "Association de la vallée de la Soummam engagée pour des berges, des plages et des forêts propres. Nous organisons des journées de nettoyage, de tri et de plantation, et nous publions les résultats de chaque action pour donner envie à d'autres de nous rejoindre.",
   },
   B: {
-    email: "nour.sante@tawa3.dz",
+    email: "nour.sante@tiwizi.dz",
     name: "Association Nour Santé",
     city: "Sétif",
     domains: ["HEALTH", "HUMANITARIAN"],
@@ -76,7 +76,7 @@ export const ORGANIZATIONS: Record<
       "Nour Santé accompagne les malades et leurs familles, en particulier les personnes atteintes de cancer. Nous organisons des collectes de sang, des formations aux premiers secours, des visites solidaires et des courses caritatives.",
   },
   C: {
-    email: "elkhir@tawa3.dz",
+    email: "elkhir@tiwizi.dz",
     name: "Association El Khir Solidarité",
     city: "Béjaïa",
     domains: ["SOCIAL", "HUMANITARIAN"],
@@ -86,7 +86,7 @@ export const ORGANIZATIONS: Record<
       "El Khir Solidarité vient en aide aux familles démunies de la wilaya de Béjaïa : paniers alimentaires, couffins du Ramadan, maraudes hivernales et petits chantiers de rénovation dans les écoles et les lieux communautaires.",
   },
   D: {
-    email: "savoir@tawa3.dz",
+    email: "savoir@tiwizi.dz",
     name: "Association Savoir Pour Tous",
     city: "Tizi Ouzou",
     domains: ["EDUCATION", "CULTURE"],
@@ -96,7 +96,7 @@ export const ORGANIZATIONS: Record<
       "Savoir Pour Tous propose un soutien scolaire gratuit aux collégiens et lycéens, des révisions du BEM et du BAC, ainsi que des ateliers d'alphabétisation pour adultes.",
   },
   E: {
-    email: "code.solidaire@tawa3.dz",
+    email: "code.solidaire@tiwizi.dz",
     name: "Collectif Code Solidaire",
     city: "Alger",
     domains: ["TECH", "EDUCATION"],
@@ -106,7 +106,7 @@ export const ORGANIZATIONS: Record<
       "Collectif de développeurs, designers et traducteurs bénévoles. Nous mettons nos compétences numériques au service des associations et initions les jeunes comme les seniors aux outils numériques.",
   },
   F: {
-    email: "sport.sans.limites@tawa3.dz",
+    email: "sport.sans.limites@tiwizi.dz",
     name: "Association Sport Sans Limites",
     city: "Oran",
     domains: ["SPORT", "SOCIAL", "CULTURE"],
@@ -134,18 +134,18 @@ export const VOLUNTEERS: Record<
     bio: string;
   }
 > = {
-  V01: { email: "lina.meziane@tawa3.dz", fullName: "Lina Meziane", city: "Alger", birthYear: 1996, totalPoints: 4250, eventsCompleted: 31, preferredDomains: ["ECOLOGY", "HEALTH", "TECH"], bio: "Ingénieure en environnement, bénévole depuis le lycée." },
-  V02: { email: "karim.boudiaf@tawa3.dz", fullName: "Karim Boudiaf", city: "Sétif", birthYear: 1991, totalPoints: 2180, eventsCompleted: 17, preferredDomains: ["HEALTH", "EDUCATION"], bio: "Infirmier, formateur aux premiers secours." },
-  V03: { email: "sarah.amrani@tawa3.dz", fullName: "Sarah Amrani", city: "Tizi Ouzou", birthYear: 1999, totalPoints: 1920, eventsCompleted: 15, preferredDomains: ["EDUCATION", "ENVIRONMENT", "CULTURE"], bio: "Étudiante en lettres, je donne des cours de soutien le week-end." },
-  V04: { email: "rayan.cherif@tawa3.dz", fullName: "Rayan Cherif", city: "Oran", birthYear: 1998, totalPoints: 1240, eventsCompleted: 10, preferredDomains: ["SPORT", "SOCIAL", "HEALTH"], bio: "Éducateur sportif, passionné de basket fauteuil." },
-  V05: { email: "nesrine.belaid@tawa3.dz", fullName: "Nesrine Belaid", city: "Béjaïa", birthYear: 2000, totalPoints: 960, eventsCompleted: 8, preferredDomains: ["HUMANITARIAN", "ECOLOGY"], bio: "Toujours partante pour les maraudes et les distributions." },
-  V06: { email: "walid.hamidi@tawa3.dz", fullName: "Walid Hamidi", city: "Constantine", birthYear: 1994, totalPoints: 810, eventsCompleted: 7, preferredDomains: ["HEALTH", "SPORT", "SOCIAL"], bio: "Donneur de sang régulier et coureur amateur." },
+  V01: { email: "lina.meziane@tiwizi.dz", fullName: "Lina Meziane", city: "Alger", birthYear: 1996, totalPoints: 4250, eventsCompleted: 31, preferredDomains: ["ECOLOGY", "HEALTH", "TECH"], bio: "Ingénieure en environnement, bénévole depuis le lycée." },
+  V02: { email: "karim.boudiaf@tiwizi.dz", fullName: "Karim Boudiaf", city: "Sétif", birthYear: 1991, totalPoints: 2180, eventsCompleted: 17, preferredDomains: ["HEALTH", "EDUCATION"], bio: "Infirmier, formateur aux premiers secours." },
+  V03: { email: "sarah.amrani@tiwizi.dz", fullName: "Sarah Amrani", city: "Tizi Ouzou", birthYear: 1999, totalPoints: 1920, eventsCompleted: 15, preferredDomains: ["EDUCATION", "ENVIRONMENT", "CULTURE"], bio: "Étudiante en lettres, je donne des cours de soutien le week-end." },
+  V04: { email: "rayan.cherif@tiwizi.dz", fullName: "Rayan Cherif", city: "Oran", birthYear: 1998, totalPoints: 1240, eventsCompleted: 10, preferredDomains: ["SPORT", "SOCIAL", "HEALTH"], bio: "Éducateur sportif, passionné de basket fauteuil." },
+  V05: { email: "nesrine.belaid@tiwizi.dz", fullName: "Nesrine Belaid", city: "Béjaïa", birthYear: 2000, totalPoints: 960, eventsCompleted: 8, preferredDomains: ["HUMANITARIAN", "ECOLOGY"], bio: "Toujours partante pour les maraudes et les distributions." },
+  V06: { email: "walid.hamidi@tiwizi.dz", fullName: "Walid Hamidi", city: "Constantine", birthYear: 1994, totalPoints: 810, eventsCompleted: 7, preferredDomains: ["HEALTH", "SPORT", "SOCIAL"], bio: "Donneur de sang régulier et coureur amateur." },
   V07: { email: DEMO_EMAILS.volunteer, fullName: "Yanis Amrouche", city: "Akbou", birthYear: 2001, totalPoints: 680, eventsCompleted: 6, preferredDomains: ["ECOLOGY", "ENVIRONMENT", "SOCIAL"], bio: "Étudiant à Béjaïa, je participe aux actions de nettoyage de la Soummam." },
-  V08: { email: "imane.kaci@tawa3.dz", fullName: "Imane Kaci", city: "Akbou", birthYear: 2002, totalPoints: 540, eventsCompleted: 5, preferredDomains: ["HUMANITARIAN", "ECOLOGY"], bio: "Bénévole dans les actions solidaires de mon quartier." },
-  V09: { email: "sofiane.aitahmed@tawa3.dz", fullName: "Sofiane Ait Ahmed", city: "Bouira", birthYear: 1997, totalPoints: 390, eventsCompleted: 4, preferredDomains: ["SOCIAL", "HUMANITARIAN", "HEALTH"], bio: "Peintre en bâtiment, je donne un coup de main aux chantiers solidaires." },
-  V10: { email: "meriem.benali@tawa3.dz", fullName: "Meriem Benali", city: "Alger", birthYear: 1985, totalPoints: 260, eventsCompleted: 3, preferredDomains: ["EDUCATION", "TECH"], bio: "Enseignante de mathématiques, j'aide aux révisions du BAC." },
-  V11: { email: "amine.ouali@tawa3.dz", fullName: "Amine Ouali", city: "Béjaïa", birthYear: 2003, totalPoints: 120, eventsCompleted: 1, preferredDomains: ["ECOLOGY", "HUMANITARIAN"], bio: "Première année de bénévolat." },
-  V12: { email: "chaima.rahmani@tawa3.dz", fullName: "Chaima Rahmani", city: "Oran", birthYear: 2004, totalPoints: 0, eventsCompleted: 0, preferredDomains: ["CULTURE", "SPORT", "EDUCATION"], bio: "Nouvelle inscrite, j'aimerais enregistrer des livres audio." },
+  V08: { email: "imane.kaci@tiwizi.dz", fullName: "Imane Kaci", city: "Akbou", birthYear: 2002, totalPoints: 540, eventsCompleted: 5, preferredDomains: ["HUMANITARIAN", "ECOLOGY"], bio: "Bénévole dans les actions solidaires de mon quartier." },
+  V09: { email: "sofiane.aitahmed@tiwizi.dz", fullName: "Sofiane Ait Ahmed", city: "Bouira", birthYear: 1997, totalPoints: 390, eventsCompleted: 4, preferredDomains: ["SOCIAL", "HUMANITARIAN", "HEALTH"], bio: "Peintre en bâtiment, je donne un coup de main aux chantiers solidaires." },
+  V10: { email: "meriem.benali@tiwizi.dz", fullName: "Meriem Benali", city: "Alger", birthYear: 1985, totalPoints: 260, eventsCompleted: 3, preferredDomains: ["EDUCATION", "TECH"], bio: "Enseignante de mathématiques, j'aide aux révisions du BAC." },
+  V11: { email: "amine.ouali@tiwizi.dz", fullName: "Amine Ouali", city: "Béjaïa", birthYear: 2003, totalPoints: 120, eventsCompleted: 1, preferredDomains: ["ECOLOGY", "HUMANITARIAN"], bio: "Première année de bénévolat." },
+  V12: { email: "chaima.rahmani@tiwizi.dz", fullName: "Chaima Rahmani", city: "Oran", birthYear: 2004, totalPoints: 0, eventsCompleted: 0, preferredDomains: ["CULTURE", "SPORT", "EDUCATION"], bio: "Nouvelle inscrite, j'aimerais enregistrer des livres audio." },
 };
 
 export type CampaignKey =
@@ -552,9 +552,9 @@ export const SPONSORS: Record<
   { email: string; companyName: string; sector: string; card: { holderName: string; last4: string } }
 > = {
   S1: { email: DEMO_EMAILS.sponsor, companyName: "Soummam Agro SARL", sector: "Agroalimentaire", card: { holderName: "Karim Messaoudi", last4: "4821" } },
-  S2: { email: "kabylie.numerique@tawa3.dz", companyName: "Kabylie Numérique SPA", sector: "Numérique", card: { holderName: "Nadia Hamdi", last4: "7310" } },
-  S3: { email: "atlas.batiment@tawa3.dz", companyName: "Atlas Bâtiment", sector: "BTP", card: { holderName: "Mourad Ziani", last4: "2294" } },
-  S4: { email: "pharma.hodna@tawa3.dz", companyName: "Pharma Hodna", sector: "Pharmaceutique", card: { holderName: "Samia Bouzid", last4: "5567" } },
+  S2: { email: "kabylie.numerique@tiwizi.dz", companyName: "Kabylie Numérique SPA", sector: "Numérique", card: { holderName: "Nadia Hamdi", last4: "7310" } },
+  S3: { email: "atlas.batiment@tiwizi.dz", companyName: "Atlas Bâtiment", sector: "BTP", card: { holderName: "Mourad Ziani", last4: "2294" } },
+  S4: { email: "pharma.hodna@tiwizi.dz", companyName: "Pharma Hodna", sector: "Pharmaceutique", card: { holderName: "Samia Bouzid", last4: "5567" } },
 };
 
 export const SPONSORSHIPS: Array<{ sponsor: SponsorKey; campaign: CampaignKey; tier: SponsorTier; daysAgo: number }> = [

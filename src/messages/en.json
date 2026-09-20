@@ -1,6 +1,6 @@
 {
   "app": {
-    "name": "TAWA3",
+    "name": "TIWIZI",
     "tagline": "Volunteering that counts, across Algeria"
   },
   "nav": {
@@ -51,7 +51,7 @@
   },
   "landing": {
     "title": "Turn the wish to help into real action",
-    "subtitle": "TAWA3 connects volunteers, organizations and companies. Join a campaign, check in with a QR code and follow your impact.",
+    "subtitle": "TIWIZI connects volunteers, organizations and companies. Join a campaign, check in with a QR code and follow your impact.",
     "ctaVolunteer": "Become a volunteer",
     "ctaOrganization": "Register my organization",
     "ctaLogin": "Demo access",

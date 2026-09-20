@@ -1,6 +1,6 @@
-# TAWA3 - Backend
+# TIWIZI - Backend
 
-TAWA3 is a volunteer-matching platform connecting volunteers, organizations and sponsors in Algeria. This branch (`backend`) contains the backend foundation: a single Next.js application whose backend runs inside Next.js through Server Components, Server Actions and Route Handlers.
+TIWIZI is a volunteer-matching platform connecting volunteers, organizations and sponsors in Algeria. This branch (`backend`) contains the backend foundation: a single Next.js application whose backend runs inside Next.js through Server Components, Server Actions and Route Handlers.
 
 The frontend is being developed separately on the `front` branch and will be integrated later.
 
@@ -67,4 +67,4 @@ Environment variables (`.env`, never committed):
 
 ## Demo accounts
 
-Log in from `/fr/login` (no password in the demo): `benevole.demo@tawa3.dz` (volunteer), `org.demo@tawa3.dz` (organization), `sponsor.demo@tawa3.dz` (sponsor). Seeded check-in fallback code: `TAWA3-DEMO-7K2Q9XHM`.
+Log in from `/fr/login` (no password in the demo): `benevole.demo@tiwizi.dz` (volunteer), `org.demo@tiwizi.dz` (organization), `sponsor.demo@tiwizi.dz` (sponsor). Seeded check-in fallback code: `TIWIZI-DEMO-7K2Q9XHM`.

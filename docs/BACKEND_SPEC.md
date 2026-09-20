@@ -1,4 +1,4 @@
-# TAWA3 — Backend Build Specification (Hackathon Prototype)
+# TIWIZI — Backend Build Specification (Hackathon Prototype)
 
 > Volunteer-matching platform connecting **Volunteers**, **Organizations**, and **Sponsors**.
 > This document is the single source of truth for the backend/dev agent. Build exactly what is here.

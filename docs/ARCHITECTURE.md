@@ -1,4 +1,4 @@
-# TAWA3 - Backend Architecture
+# TIWIZI - Backend Architecture
 
 Status: architecture phase complete, implementation not started.
 Branch: `backend`.
@@ -8,7 +8,7 @@ Primary source of truth: `docs/BACKEND_SPEC.md`. This document describes exactly
 
 ## 1. Project objective
 
-TAWA3 is a volunteer-matching platform connecting three roles:
+TIWIZI is a volunteer-matching platform connecting three roles:
 
 - **Volunteers** discover campaigns, enroll, get checked in by QR at the event, earn points, climb tiers and a national ranking.
 - **Organizations** (associations) create and manage campaigns, manage participants, scan volunteer QR codes, and follow their funding (caisse).
@@ -68,7 +68,7 @@ Everything above except `.gitignore`. In particular the Firebase/Firestore data 
 | C4 | Spec folder marks `org/scanner/page.tsx` as client ("camera QR scan (client)"), but role gating must run on the server. | `page.tsx` is a Server Component that calls `requireRole("ORGANIZATION")` and renders the `"use client"` `QrScanner` component. Camera code is 100% client. |
 | C5 | Capacity rule "capacity remaining = capacity - count(ENROLLED)". Once a volunteer is marked ATTENDED their status leaves ENROLLED and the literal formula would reopen their seat. | Occupied seats = count(`ENROLLED`) + count(`ATTENDED`). Remaining = `capacity - occupied` (unlimited when `capacity = 0`). This is the only reading that keeps the spec's intent after check-in. |
 | C6 | `CheckInToken.token` defaults to `cuid()` in the spec; the spec also says "opaque random token". A cuid is partly time-derived. | Schema keeps `@default(cuid())` unchanged. Application code always sets the token explicitly to `crypto.randomBytes(24).toString("base64url")` (32 chars, 192 bits). |
-| C7 | Product name: `BACKEND_SPEC.md` says **TAWA3**, the repository concept document says **ATHAR**. | Use TAWA3 (spec is source of truth). The name only appears in i18n key `app.name`, so renaming is a one-line change per locale. |
+| C7 | Product name: `BACKEND_SPEC.md` says **TIWIZI**, the repository concept document says **ATHAR**. | Use TIWIZI (spec is source of truth). The name only appears in i18n key `app.name`, so renaming is a one-line change per locale. |
 | C8 | ATHAR concept: the association displays a mission QR and the volunteer scans it; check-out; hours. Spec: the volunteer shows a personal token QR and the organization scans it; no check-out; no hours. | Spec flow implemented. No check-out, no hours. |
 | C9 | Spec section 6 requires a live volunteer signup flow but the spec folder tree has no volunteer onboarding page. Spec acceptance says the org "gets a notification" but there is no org inbox page. Spec section 8 asks for a leaderboard view but there is no page for it. Update of a campaign has no page. | Add exactly four pages: `volunteer/onboarding`, `org/inbox`, `leaderboard`, `org/campaigns/[id]/edit`. No other page is added. |
 
@@ -1288,7 +1288,7 @@ Demo sponsor login: `sponsor.demo@tawa3.dz` (Soummam Agro SARL).
   - demo volunteer: 2 `CAMPAIGN_RECOMMENDATION` (C04, C13, unread), 1 `CAMPAIGN_REMINDER` (C01, unread), 1 `ENROLLMENT_CONFIRMED` (C01, read), 1 `CAMPAIGN_CANCELLED` (C14, unread), 1 `POINTS_AWARDED` (C10, read).
   - demo org: 1 `DONATION_RECEIVED` (C02), 1 `SPONSOR_CONFIRMED` (C02).
   - org C: `SPONSOR_CONFIRMED` for C12 and C13.
-- Demo check-in token: `CheckInToken { token: "TAWA3-DEMO-7K2Q9XHM", volunteerId: demo volunteer, campaignId: C01, expiresAt: now + 30 days }`. It is opaque (no PII) and deliberately long-lived as the documented fallback for the stage; normal tokens keep the 2 h TTL. It is single-use like any token; re-running the seed restores it.
+- Demo check-in token: `CheckInToken { token: "TIWIZI-DEMO-7K2Q9XHM", volunteerId: demo volunteer, campaignId: C01, expiresAt: now + 30 days }`. It is opaque (no PII) and deliberately long-lived as the documented fallback for the stage; normal tokens keep the 2 h TTL. It is single-use like any token; re-running the seed restores it.
 
 ---
 
@@ -1614,14 +1614,14 @@ Cut from the bottom of P2 upward if time runs out. Never cut a P0 fallback (manu
 - [ ] `npm run db:reset` run on the demo morning (fresh relative dates, fresh demo token).
 - [ ] Production URL loads; no console errors on landing, login, feed, profile, scanner, caisse.
 - [ ] Warm Neon 30-60 s before presenting (open `/fr/login`, which queries the DB).
-- [ ] Org phone: logged in as `org.demo@tawa3.dz` on the production URL, camera permission granted on `/fr/org/scanner`, tested in venue lighting.
-- [ ] Volunteer phone: logged in as `benevole.demo@tawa3.dz`, `/fr/volunteer/checkin/<C01 id>` shows a QR, screen brightness up.
+- [ ] Org phone: logged in as `org.demo@tiwizi.dz` on the production URL, camera permission granted on `/fr/org/scanner`, tested in venue lighting.
+- [ ] Volunteer phone: logged in as `benevole.demo@tiwizi.dz`, `/fr/volunteer/checkin/<C01 id>` shows a QR, screen brightness up.
 - [ ] `npm run seed:verify` passes against the production database and its printed ranks match section 29.7.
 - [ ] Happy path rehearsed: volunteer enrolls in a campaign -> shows QR (C01) -> org scans -> card shows name, +150, 830 -> volunteer profile shows 830, tier "Engagé", the rank printed by `seed:verify`, inbox has "points" and "palier" notifications.
-- [ ] Manual token fallback: type `TAWA3-DEMO-7K2Q9XHM` (only if the live QR was not used on C01; otherwise it answers "already checked in", which is also a valid demonstration).
+- [ ] Manual token fallback: type `TIWIZI-DEMO-7K2Q9XHM` (only if the live QR was not used on C01; otherwise it answers "already checked in", which is also a valid demonstration).
 - [ ] Manual attendance from the participant list works.
 - [ ] Org creates a campaign live -> appears in volunteer feed; cancel it -> volunteer inbox shows the cancellation.
-- [ ] Sponsor (`sponsor.demo@tawa3.dz`) buys PRO on C02 (Nettoyage de la plage de Tichy) -> appears in the demo org's caisse with correct total -> demo org inbox shows the notice.
+- [ ] Sponsor (`sponsor.demo@tiwizi.dz`) buys PRO on C02 (Nettoyage de la plage de Tichy) -> appears in the demo org's caisse with correct total -> demo org inbox shows the notice.
 - [ ] Donation on a public campaign page appears in the caisse.
 - [ ] Switch to AR on every demo page: layout RTL, nothing overlapping, digits readable.
 - [ ] No emoji in UI or seed text (`grep -P "[\x{1F300}-\x{1FAFF}\x{2600}-\x{27BF}]"` returns nothing).

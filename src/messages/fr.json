@@ -1,6 +1,6 @@
 {
   "app": {
-    "name": "TAWA3",
+    "name": "TIWIZI",
     "tagline": "Le bénévolat qui compte, partout en Algérie"
   },
   "nav": {
@@ -51,7 +51,7 @@
   },
   "landing": {
     "title": "Transformez l'envie d'aider en actions concrètes",
-    "subtitle": "TAWA3 relie les bénévoles, les associations et les entreprises. Inscrivez-vous à une campagne, pointez votre présence par QR code et suivez votre impact.",
+    "subtitle": "TIWIZI relie les bénévoles, les associations et les entreprises. Inscrivez-vous à une campagne, pointez votre présence par QR code et suivez votre impact.",
     "ctaVolunteer": "Je deviens bénévole",
     "ctaOrganization": "J'inscris mon association",
     "ctaLogin": "Accès démo",
