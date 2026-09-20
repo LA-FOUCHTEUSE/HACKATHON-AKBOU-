@@ -16,7 +16,7 @@ export function ProblemSection() {
           {problem.cards.map((card, i) => {
             const Icon = ICONS[i];
             return (
-              <div key={card.title} className="border border-hairline bg-canvas-raised px-7 pb-8 pt-7">
+              <div key={card.title} className="tw-glass px-7 pb-8 pt-7">
                 <Icon className="size-6 text-ink" strokeWidth={1.4} />
                 <h3 className="font-display mb-2.5 mt-5 text-lg font-semibold">{card.title}</h3>
                 <p className="m-0 text-base text-ink-muted">{card.body}</p>

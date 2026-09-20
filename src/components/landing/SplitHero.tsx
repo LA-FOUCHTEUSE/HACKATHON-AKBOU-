@@ -228,7 +228,7 @@ function HeroCopy({ inverted = false }: { inverted?: boolean }) {
         {hero.wordmark}
       </h1>
       <p
-        className="mx-auto mt-5 max-w-[42ch] text-[1.0625rem] leading-relaxed"
+        className="mx-auto mt-16 max-w-[42ch] text-[1.0625rem] leading-relaxed"
         style={{ color: inverted ? "rgba(255,255,255,0.92)" : "var(--ink-muted)" }}
       >
         {hero.tagline}
@@ -358,7 +358,7 @@ function MobilePanel({
   button: string;
 }) {
   return (
-    <div className={`border-s ${border} ${tint} px-6 py-6`}>
+    <div className={`rounded-2xl border-s-4 ${border} ${tint} px-6 py-6`}>
       <div className={`text-xs uppercase tracking-[0.16em] ${text}`}>{label}</div>
       <h2 className="font-display my-2.5 mb-4 text-2xl font-semibold leading-snug tracking-[-0.01em]">
         {headline}

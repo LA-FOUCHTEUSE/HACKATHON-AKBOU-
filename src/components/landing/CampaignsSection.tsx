@@ -15,7 +15,7 @@ export function CampaignsSection() {
           {campaigns.items.map((item) => (
             <article
               key={item.title}
-              className="flex flex-col border border-hairline bg-canvas-raised"
+              className="tw-glass flex flex-col overflow-hidden"
             >
               <div className="flex aspect-video flex-col items-center justify-center gap-2.5 bg-motif/10">
                 <ImageIcon className="size-[26px] text-motif" strokeWidth={1.3} />
@@ -24,7 +24,7 @@ export function CampaignsSection() {
                 </span>
               </div>
               <div className="flex flex-1 flex-col px-6 pb-5 pt-6">
-                <span className="self-start border border-hairline px-2.5 py-1 text-[0.6875rem] uppercase tracking-[0.12em] text-ink-muted">
+                <span className="self-start rounded-full border border-hairline px-3 py-1 text-[0.6875rem] uppercase tracking-[0.12em] text-ink-muted">
                   {item.domain}
                 </span>
                 <h3 className="font-display mb-2.5 mt-4 text-[1.1875rem] font-semibold leading-snug">

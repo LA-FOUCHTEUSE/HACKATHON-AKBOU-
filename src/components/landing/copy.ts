@@ -72,8 +72,20 @@ export const landingCopy = {
 
   progression: {
     heading: "Votre engagement se voit",
-    tiers: ["Nouveau", "Contributeur", "Engagé", "Champion", "Légende"],
+    // Thresholds mirror TIERS in src/lib/tiers.ts so the showcase matches the product.
+    tiers: [
+      { name: "Nouveau", threshold: "0" },
+      { name: "Contributeur", threshold: "300" },
+      { name: "Engagé", threshold: "800" },
+      { name: "Champion", threshold: "1 800" },
+      { name: "Légende", threshold: "4 000" },
+    ],
     activeTierIndex: 2,
+    pointsLabel: "pts",
+    currentPoints: "1 240",
+    currentPointsLabel: "Vos points",
+    nextTierLabel: "Prochain palier",
+    nextTierGap: "560 pts pour devenir Champion",
     note: "Chaque présence confirmée sur le terrain ajoute des points à votre profil. Les paliers et le classement national sont publics.",
     leaderboardTitle: "Classement national",
     leaderboardPeriod: "Septembre",

@@ -58,7 +58,7 @@ export function LandingNav() {
               <ChevronDown className="size-3" />
             </button>
             {langOpen ? (
-              <div className="absolute start-0 top-9 z-95 min-w-[86px] border border-hairline bg-canvas-raised py-1">
+              <div className="tw-glass absolute start-0 top-9 z-95 min-w-[86px] overflow-hidden py-1">
                 {nav.languages.map((item) => (
                   <button
                     key={item.code}

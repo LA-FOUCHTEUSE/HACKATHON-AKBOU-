@@ -15,15 +15,15 @@ export function SponsorsSection() {
           {sponsors.packs.map((pack) => (
             <div
               key={pack.name}
-              className={`flex flex-col gap-5 border bg-canvas-raised px-7 pb-8 pt-7 ${
-                pack.featured ? "border-org" : "border-hairline"
+              className={`tw-glass flex flex-col gap-5 px-7 pb-8 pt-7 ${
+                pack.featured ? "tw-glass-org" : ""
               }`}
             >
               <div>
                 <div className="flex items-center gap-3">
                   <h3 className="font-display m-0 text-xl font-semibold">{pack.name}</h3>
                   {pack.featured ? (
-                    <span className="border border-org px-2.5 py-1 text-[0.6875rem] uppercase tracking-[0.12em] text-org">
+                    <span className="rounded-full border border-org px-3 py-1 text-[0.6875rem] uppercase tracking-[0.12em] text-org">
                       {sponsors.mostChosen}
                     </span>
                   ) : null}

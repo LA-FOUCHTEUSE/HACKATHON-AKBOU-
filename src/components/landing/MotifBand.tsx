@@ -36,18 +36,17 @@ function wavePath(offset: number): string {
   return d;
 }
 
-const WAVES = [
-  { d: wavePath(WAVE_OFFSET), duration: "33s", delay: "0s" },
-  { d: wavePath(-WAVE_OFFSET), duration: "27s", delay: "-9s" },
-];
+// Only the upper line is drawn: a lower one would trail past the band and read as
+// a stray rule crossing the Algeria map beneath it.
+const WAVES = [{ d: wavePath(WAVE_OFFSET), duration: "33s", delay: "0s" }];
 
 // Three copies of the row: the marquee shifts by exactly one row width, so the
-// seam always lands on an identical cell. Each motif's vertical position is
-// sampled from the wave path at its resting x, so it rides the same curve the
-// drifting line traces instead of running straight through the band.
+// seam always lands on an identical cell. Each motif sits on the wave's curve
+// offset downward, so the row rides *inside* the band rather than along its edge.
+const MOTIF_DROP = 30;
 const CELLS = Array.from({ length: MOTIF_COUNT * 3 }, (_, i) => {
   const x = i * CELL_WIDTH + CELL_WIDTH / 2;
-  return { index: i, y: waveY(x, WAVE_OFFSET) };
+  return { index: i, y: waveY(x, WAVE_OFFSET) + MOTIF_DROP };
 });
 
 export function MotifBand() {
