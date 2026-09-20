@@ -228,7 +228,7 @@ function HeroCopy({ inverted = false }: { inverted?: boolean }) {
         {hero.wordmark}
       </h1>
       <p
-        className="mx-auto mt-16 max-w-[42ch] text-[1.0625rem] leading-relaxed"
+        className="mx-auto mt-3 max-w-[42ch] text-[1.0625rem] leading-relaxed"
         style={{ color: inverted ? "rgba(255,255,255,0.92)" : "var(--ink-muted)" }}
       >
         {hero.tagline}

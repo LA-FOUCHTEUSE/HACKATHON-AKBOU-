@@ -107,6 +107,8 @@ export const landingCopy = {
       {
         domain: "Environnement",
         title: "Nettoyage de la plage de Tichy",
+        image: "/campaigns/plage-tichy.webp",
+        imageAlt: "Deux jeunes bénévoles ramassent des déchets sur une plage",
         organization: "Association Thiwizi Verte",
         city: "Béjaïa",
         date: "Samedi 3 octobre",
@@ -115,6 +117,8 @@ export const landingCopy = {
       {
         domain: "Éducation",
         title: "Révisions gratuites du BAC",
+        image: "/campaigns/revisions-bac.webp",
+        imageAlt: "Des lycéens révisent ensemble autour d'une table",
         organization: "Club Scientifique d'Akbou",
         city: "Akbou",
         date: "Tous les dimanches",
@@ -123,6 +127,8 @@ export const landingCopy = {
       {
         domain: "Santé",
         title: "Journée de don de sang",
+        image: "/campaigns/don-de-sang.webp",
+        imageAlt: "Un donneur tient un papier découpé en forme de cœur",
         organization: "Croissant-Rouge, comité local",
         city: "Sétif",
         date: "Jeudi 15 octobre",
@@ -131,6 +137,8 @@ export const landingCopy = {
       {
         domain: "Social et entraide",
         title: "Distribution de repas en hiver",
+        image: "/campaigns/distribution-repas.webp",
+        imageAlt: "Des bénévoles servent des repas chauds dans la rue",
         organization: "Collectif Tafat",
         city: "Tizi Ouzou",
         date: "Chaque vendredi",
@@ -139,6 +147,8 @@ export const landingCopy = {
       {
         domain: "Numérique",
         title: "Initiation au code pour lycéennes",
+        image: "/campaigns/initiation-code.webp",
+        imageAlt: "Un atelier de programmation avec des adolescents devant des ordinateurs",
         organization: "Association Numidia Digital",
         city: "Constantine",
         date: "Samedi 24 octobre",
